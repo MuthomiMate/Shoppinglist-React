@@ -85,7 +85,31 @@ class Dashboard extends Component{
 
                     </div>
                 </div>
+                <div className = "modal modal-fade" id="adds" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
 
+
+                    <div className= "modal-header">
+                        <div className="modal-title">Add a shoppinglist </div>
+                    </div>
+                    <div className="modal-body">
+                        <div className="form">
+                            <div className="form-group">
+                                <input className="form-control" type="text" id="name" placeholder="Enter shopping list Name"
+                                       onChange={(event, newValue) => this.setState({name:newValue})}>
+                            </input>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="modal-footer">
+                        <div className="button btn-primary" style={{float: "left", width: "150px", textAlign: "centre"}} onClick={this.addshoppinglist} >Add</div>
+                        <div className="button btn-primary" data-dismiss = "modal"   style={{float:"right", width :"150px", textAlign: "centre"}}>Close</div>
+                    </div>
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
 
