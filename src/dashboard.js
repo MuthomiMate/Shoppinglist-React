@@ -45,7 +45,33 @@ class Dashboard extends Component{
                 console.log(error.response)
         });
     }
+    addshoppinglist = (event) => {
+        var payload = {
+            "name": "mate"
 
+        };
+       console.log(payload);
+       console.log(this.state.shoppinglists)
+        axios({
+
+            url: `${apiBaseUrl}shoppinglists/`,
+            method: 'post',
+            data: payload,
+            headers: {
+                Authorization: 'Bearer ' + window.localStorage.getItem("token"),
+                content_type: 'application/json',
+            },
+        })
+            .then((response) => {
+            console.log(response.data)
+
+
+
+        })
+            .catch((error) => {
+            console.log((error.response))
+        })
+    }
     render (){
 
         return(
