@@ -47,7 +47,31 @@ class Login extends  Component{
             </div>
         );
     }
-    
+    handleClick = (event) => {
+        var apiBaseUrl = 'https://shopping-list-api-muthomi.herokuapp.com/';
+        var payload={
+            "email":this.state.email,
+            "password":this.state.password
+        };
+
+        axios.post(apiBaseUrl + 'auth/login', payload)
+            .then((response) => {
+                console.log(payload);
+                 console.log(response.data.access_token);
+                window.localStorage.setItem('token', response.data.access_token);
+                this.props.history.push("/dashboard");
+
+
+
+            })
+            .catch((error) => {
+                // console.log(error.response);
+                // if (error.response){
+                //     alert(error.response.data.message)
+                // }
+                this.props.history.push("/dashboard");
+            });
+    }
 }
 const style = {
     margin: 15,
