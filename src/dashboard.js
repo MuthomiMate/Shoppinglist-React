@@ -12,6 +12,7 @@ class Dashboard extends Component{
             msg: '',
             id : '',
             name: '',
+            password: ""
         }
     }
 
@@ -51,7 +52,7 @@ class Dashboard extends Component{
             "name": this.state.name
 
         };
-       console.log(this.state.msg);
+       console.log(this.state.password);
        console.log(this.state.shoppinglists)
         axios({
 
@@ -98,7 +99,7 @@ class Dashboard extends Component{
                         <div className="form">
                             <div className="form-group">
                                 <input className="form-control" type="text" id="name" placeholder="Enter shopping list Name"
-                                       onChange={(event, newValue) => this.setState({msg:newValue})}>
+                                       onChange={(event, newValue) => this.setState({name:newValue})}>
                             </input>
                         </div>
                     </div>
