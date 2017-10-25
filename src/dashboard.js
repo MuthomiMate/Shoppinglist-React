@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import MainNav from "./navbar"
 import axios from "axios"
+import * as ReactBootstrap from 'react-bootstrap';
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
 class Dashboard extends Component{
@@ -47,10 +48,10 @@ class Dashboard extends Component{
     }
     addshoppinglist = (event) => {
         var payload = {
-            "name": "mate"
+            "name": this.state.name
 
         };
-       console.log(payload);
+       console.log(this.state.msg);
        console.log(this.state.shoppinglists)
         axios({
 
@@ -81,7 +82,7 @@ class Dashboard extends Component{
                     <div className="panel panel-success">
                         <div className="panel-heading">shoppinglist</div>
                         <div className="panel-body">{this.state.msg}</div>
-                        <div className="button btn-primary" data-toggle="modal" data-target="#adds"> Add Shopping List</div>
+                        <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#adds">Add Shopping List</ReactBootstrap.Button>
 
                     </div>
                 </div>
@@ -97,14 +98,14 @@ class Dashboard extends Component{
                         <div className="form">
                             <div className="form-group">
                                 <input className="form-control" type="text" id="name" placeholder="Enter shopping list Name"
-                                       onChange={(event, newValue) => this.setState({name:newValue})}>
+                                       onChange={(event, newValue) => this.setState({msg:newValue})}>
                             </input>
                         </div>
                     </div>
                     </div>
                     <div className="modal-footer">
-                        <div className="button btn-primary" style={{float: "left", width: "150px", textAlign: "centre"}} onClick={this.addshoppinglist} >Add</div>
-                        <div className="button btn-primary" data-dismiss = "modal"   style={{float:"right", width :"150px", textAlign: "centre"}}>Close</div>
+                        <ReactBootstrap.Button bsStyle="primary" style = {{float:"left", width: "150px"}} onClick={this.addshoppinglist}>Add</ReactBootstrap.Button>
+                        <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>çlose</ReactBootstrap.Button>
                     </div>
                         </div>
                     </div>
