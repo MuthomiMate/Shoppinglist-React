@@ -14,7 +14,37 @@ class Dashboard extends Component{
         }
     }
 
+    componentDidMount(){
+        this.getshoppinglists();
+    }
 
+    getshoppinglists (){
+        axios({
+            url: `${apiBaseUrl}shoppinglists/`,
+            method: 'get',
+            headers: {
+                Authorization: 'Bearer ' + window.localStorage.getItem("token"),
+                content_type: 'application/json',
+            },
+
+        })
+            .then((response) => {
+                console.log(response.data)
+                if(response.data.message === "You do not have  any shopping list"){
+                    this.setState({
+                        msg: response.data.message,
+                    });
+
+                }
+                this.setState({
+                    shoppinglists:response.data,
+                });
+
+            })
+            .catch((error) => {
+                console.log(error.response)
+        });
+    }
 
     render (){
 
