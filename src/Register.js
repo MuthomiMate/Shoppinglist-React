@@ -6,7 +6,34 @@ import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import Login from './Login';
 class Register extends Component {
-   
+    handleClick(event){
+        var apiBaseUrl = 'https://shopping-list-api-muthomi.herokuapp.com/';
+        console.log("values",this.state.first_name,this.state.last_name,this.state.email,this.state.password);
+        //To be done:check for empty values before hitting submit
+        var self = this;
+        var payload={
+            "email":this.state.email,
+            "password":this.state.password
+        }
+        axios.post(apiBaseUrl+'auth/register', payload)
+            .then(function (response) {
+                console.log(response);
+                    //  console.log("registration successfull");
+                var result = response.data.message;
+                if (result == 'You registered successfully. Please log in.'){
+                    console.log(result);
+
+                }else {
+                    alert(result);
+                }
+
+
+            })
+            .catch(function (error) {
+                console.log(error);
+                alert(error.response.data.message)
+            });
+    }
     constructor(props){
         super(props);
         this.state={
