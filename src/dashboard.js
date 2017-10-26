@@ -79,9 +79,10 @@ class Dashboard extends Component{
         var payload = {
             "name": this.state.name
         }
+        console.log(payload)
         axios({
-            url: `${apiBaseUrl}shoppinglists/{id}`,
-            method: put,
+            url: `${apiBaseUrl}shoppinglists/`+this.state.id,
+            method: 'PUT',
             data: payload,
             headers: {
                 Authorization: 'Bearer ' + window.localStorage.getItem("token"),
@@ -123,7 +124,7 @@ class Dashboard extends Component{
                                         <td><i>{++x}</i></td>
                                         <td>{shoppinglists.name} </td>
                                         <td><div className= "button btn-primary glyphicon glyphicon-eye-open"></div></td>
-                                        <td><div className= "button btn-success glyphicon glyphicon-pencil"></div></td>
+                                        <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#edits" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
                                         <td><div className= "button btn-danger glyphicon glyphicon-trash"></div></td>
                                     </tr>
                                 ))
@@ -154,6 +155,31 @@ class Dashboard extends Component{
                         <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal"style = {{float:"left", width: "150px"}} onClick={this.addshoppinglist}>Add</ReactBootstrap.Button>
                         <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>çlose</ReactBootstrap.Button>
                     </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div className = "modal modal-fade" id="edits" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+
+
+                            <div className= "modal-header">
+                                <div className="modal-title"> Edit this bucket</div>
+                            </div>
+                            <div className="modal-body">
+                                <div className="form">
+                                    <div className="form-group">
+                                        <input className="form-control" type="text" id="name" placeholder="Enter new shopping list Name"
+                                               onChange={(event) =>this.setState({name:event.target.value})}>
+                                        </input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal"style = {{float:"left", width: "150px"}} onClick={this.editshoppinglist}>Add</ReactBootstrap.Button>
+                                <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>çlose</ReactBootstrap.Button>
+                            </div>
                         </div>
                     </div>
 
