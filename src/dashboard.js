@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import MainNav from "./navbar"
 import axios from "axios"
+import ReactTooltip from 'react-tooltip'
 import * as ReactBootstrap from 'react-bootstrap';
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
@@ -19,6 +20,7 @@ class Dashboard extends Component{
     componentDidMount(){
         this.getshoppinglists();
     }
+
 
     getshoppinglists (){
         axios({
@@ -49,7 +51,7 @@ class Dashboard extends Component{
     }
     addshoppinglist = (event) => {
         var payload = {
-            "name": this.state.name
+            "name": "muthomi"
 
         };
        console.log(this.state.password);
@@ -74,8 +76,10 @@ class Dashboard extends Component{
             console.log((error.response))
         })
     }
+    
     render (){
-
+    const shoppinglists =this.state.shoppinglists;
+    let x = 0;
         return(
             <div>
                 <MainNav/>
@@ -84,6 +88,30 @@ class Dashboard extends Component{
                         <div className="panel-heading">shoppinglist</div>
                         <div className="panel-body">{this.state.msg}</div>
                         <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#adds">Add Shopping List</ReactBootstrap.Button>
+                        <ReactBootstrap.Table responsive bordered className="sTable">
+                            <thead className="bg-info">
+                            <tr>
+                                <th></th>
+                                <th>Shoppinglist Name</th>
+                                <th>View</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                shoppinglists.map((shoppinglists) => (
+                                    <tr className="buckets" key = {shoppinglists.id}>
+                                        <td><i>{++x}</i></td>
+                                        <td>{shoppinglists.name} </td>
+                                        <td><div className= "button btn-primary glyphicon glyphicon-eye-open"></div></td>
+                                        <td><div className= "button btn-success glyphicon glyphicon-pencil"></div></td>
+                                        <td><div className= "button btn-danger glyphicon glyphicon-trash"></div></td>
+                                    </tr>
+                                ))
+                            }
+                            </tbody>
+                        </ReactBootstrap.Table>
 
                     </div>
                 </div>
@@ -105,13 +133,14 @@ class Dashboard extends Component{
                     </div>
                     </div>
                     <div className="modal-footer">
-                        <ReactBootstrap.Button bsStyle="primary" style = {{float:"left", width: "150px"}} onClick={this.addshoppinglist}>Add</ReactBootstrap.Button>
+                        <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal"style = {{float:"left", width: "150px"}} onClick={this.addshoppinglist}>Add</ReactBootstrap.Button>
                         <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>çlose</ReactBootstrap.Button>
                     </div>
                         </div>
                     </div>
 
                 </div>
+
 
             </div>
 
