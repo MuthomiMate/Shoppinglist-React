@@ -12,8 +12,7 @@ class Dashboard extends Component{
             shoppinglists: [],
             msg: '',
             id : '',
-            name: '',
-            password: ""
+            name: ''
         }
     }
 
@@ -76,7 +75,26 @@ class Dashboard extends Component{
             console.log((error.response))
         })
     }
-    
+    editshoppinglist = (event, id) => {
+        var payload = {
+            "name": this.state.name
+        }
+        axios({
+            url: `${apiBaseUrl}shoppinglists/{id}`,
+            method: put,
+            data: payload,
+            headers: {
+                Authorization: 'Bearer ' + window.localStorage.getItem("token"),
+                content_type: 'application/json',
+            },
+        })
+            .then((response)=>{
+                console.log(response.data)
+            })
+            .catch((error) =>{
+                console.log(error.response)
+            })
+    }
     render (){
     const shoppinglists =this.state.shoppinglists;
     let x = 0;
