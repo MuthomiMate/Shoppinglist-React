@@ -11,6 +11,7 @@ class Dashboard extends Component{
         super(props);
         this.state = {
             shoppinglists: [],
+            items: [],
             msg: '',
             id : '',
             name: ''
@@ -50,7 +51,7 @@ class Dashboard extends Component{
             });
     }
     addshoppinglist = (event) => {
-        var payload = {
+        let payload = {
             "name": "muthomi"
 
         };
@@ -77,7 +78,7 @@ class Dashboard extends Component{
             })
     }
     editshoppinglist = (event, id) => {
-        var payload = {
+        let payload = {
             "name": this.state.name
         }
         console.log(payload)
@@ -155,9 +156,26 @@ class Dashboard extends Component{
             "name": this.state.name
         }
         axios({
-            url: `${apiBaseUrl}shoppinglists`+this.state.id,
+            url: `${apiBaseUrl}shoppinglists/`+this.state.id,
             method: 'PUT',
             data: payload,
+            headers: {
+                Authorization: token,
+                content_type: 'application/json'
+            }
+        })
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error.data)
+            })
+
+    }
+    deleteItem = (event) => {
+        axios({
+            url: `${apiBaseUrl}shoppinglists/`+this.state.id,
+            method: 'DELETE',
             headers: {
                 Authorization: token,
                 content_type: 'application/json'
@@ -284,6 +302,7 @@ class Dashboard extends Component{
                     </div>
 
                 </div>
+                
 
 
             </div>
