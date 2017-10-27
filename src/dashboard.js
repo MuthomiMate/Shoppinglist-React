@@ -96,7 +96,24 @@ class Dashboard extends Component{
                 console.log(error.response)
             })
     }
-  
+    deleteshoppinglist = (event,id) => {
+        axios({
+            url: `${apiBaseUrl}shoppinglists/`+this.state.id,
+            method: 'DELETE',
+            headers: {
+                Authorization: 'Bearer ' + window.localStorage.getItem("token"),
+                content_type: 'application/json',
+            },
+        })
+            .then((response) =>{
+                console.log(response.data)
+            })
+            .catch((error) =>{
+                console.log(error.data)
+            })
+
+    }
+   
     render (){
     const shoppinglists =this.state.shoppinglists;
     let x = 0;
