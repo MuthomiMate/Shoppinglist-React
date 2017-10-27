@@ -96,6 +96,7 @@ class Dashboard extends Component{
                 console.log(error.response)
             })
     }
+  
     render (){
     const shoppinglists =this.state.shoppinglists;
     let x = 0;
@@ -107,7 +108,7 @@ class Dashboard extends Component{
                         <div className="panel-heading">shoppinglist</div>
                         <div className="panel-body">{this.state.msg}</div>
                         <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#adds">Add Shopping List</ReactBootstrap.Button>
-                        <ReactBootstrap.Table responsive bordered className="sTable">
+                        <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
                             <thead className="bg-info">
                             <tr>
                                 <th></th>
@@ -125,7 +126,7 @@ class Dashboard extends Component{
                                         <td>{shoppinglists.name} </td>
                                         <td><div className= "button btn-primary glyphicon glyphicon-eye-open"></div></td>
                                         <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#edits" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
-                                        <td><div className= "button btn-danger glyphicon glyphicon-trash"></div></td>
+                                        <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deletes" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
                                     </tr>
                                 ))
                             }
@@ -179,6 +180,30 @@ class Dashboard extends Component{
                             <div className="modal-footer">
                                 <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal"style = {{float:"left", width: "150px"}} onClick={this.editshoppinglist}>Add</ReactBootstrap.Button>
                                 <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>çlose</ReactBootstrap.Button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div className = "modal modal-fade" id="deletes" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+
+
+                            <div className= "modal-header">
+                                <div className="modal-title text-center"> Delete shoppinglist</div>
+                            </div>
+                            <div className="modal-body">
+                                <div className="form">
+                                    <div>
+                                        <div><h4 className="text-center">Are you sure you want to Delete this Shopping list</h4></div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <ReactBootstrap.Button bsStyle="danger" data-dismiss = "modal"style = {{float:"left", width: "150px"}} onClick={this.deleteshoppinglist}>OK</ReactBootstrap.Button>
+                                <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>Cancel</ReactBootstrap.Button>
                             </div>
                         </div>
                     </div>
