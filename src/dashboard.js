@@ -21,6 +21,10 @@ class Dashboard extends Component{
     componentDidMount(){
         this.getshoppinglists();
     }
+    componentDidUpdate(){
+        this.getItems();
+
+    }
 
 
     getshoppinglists (){
@@ -192,6 +196,7 @@ class Dashboard extends Component{
 
     render (){
         const shoppinglists =this.state.shoppinglists;
+        const items = this.state.items;
         let x = 0;
         return(
             <div>
@@ -217,7 +222,7 @@ class Dashboard extends Component{
                                     <tr className="buckets" key = {shoppinglists.id}>
                                         <td><i>{++x}</i></td>
                                         <td>{shoppinglists.name} </td>
-                                        <td><div className= "button btn-primary glyphicon glyphicon-eye-open"></div></td>
+                                        <td><div className= "button btn-primary glyphicon glyphicon-eye-open"data-toggle="modal" data-target="#items" onClick={(event=>this.setState({  id: shoppinglists.id, name:shoppinglists.name  }))} ></div></td>
                                         <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#edits" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
                                         <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deletes" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
                                     </tr>
@@ -228,7 +233,7 @@ class Dashboard extends Component{
 
                     </div>
                 </div>
-                <div className = "modal modal-fade" id="adds" role="dialog">
+                <div className = "modal " id="adds" role="dialog" data-backdrop="false">
                     <div className="modal-dialog">
                         <div className="modal-content">
 
@@ -253,7 +258,7 @@ class Dashboard extends Component{
                     </div>
 
                 </div>
-                <div className = "modal modal-fade" id="edits" role="dialog">
+                <div className = "modal " id="edits" role="dialog" data-backdrop="false">
                     <div className="modal-dialog">
                         <div className="modal-content">
 
@@ -278,7 +283,7 @@ class Dashboard extends Component{
                     </div>
 
                 </div>
-                <div className = "modal modal-fade" id="deletes" role="dialog">
+                <div className = "modal " id="deletes" role="dialog" data-backdrop="false">
                     <div className="modal-dialog">
                         <div className="modal-content">
 
@@ -302,7 +307,48 @@ class Dashboard extends Component{
                     </div>
 
                 </div>
-                
+
+                <div className = "modal " id="items" role="dialog" data-backdrop="false">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+
+
+                            <div className= "modal-header">
+                                <div className="modal-title text-center"> {this.state.name}</div>
+                            </div>
+                            <div className="modal-body">
+                                <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
+                                    <thead className="bg-info">
+                                    <tr>
+                                        <th></th>
+                                        <th>Item Name</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        items.map((items) => (
+                                            <tr className="buckets" key = {items.id}>
+                                                <td><i>{++x}</i></td>
+                                                <td>{shoppinglists.name} </td>
+                                                <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#items" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
+                                                <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deletes" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
+                                            </tr>
+                                        ))
+                                    }
+                                    </tbody>
+                                </ReactBootstrap.Table>
+                            </div>
+                            <div className="modal-footer">
+                                <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>Cancel</ReactBootstrap.Button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
 
 
             </div>
