@@ -5,6 +5,7 @@ import ReactTooltip from 'react-tooltip'
 import * as ReactBootstrap from 'react-bootstrap';
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
+const  token =window.localStorage.getItem("token")
 class Dashboard extends Component{
     constructor(props){
         super(props);
@@ -26,7 +27,7 @@ class Dashboard extends Component{
             url: `${apiBaseUrl}shoppinglists/`,
             method: 'get',
             headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem("token"),
+                Authorization: token,
                 content_type: 'application/json',
             },
 
@@ -61,7 +62,7 @@ class Dashboard extends Component{
             method: 'post',
             data: payload,
             headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem("token"),
+                Authorization: token,
                 content_type: 'application/json',
             },
         })
@@ -85,7 +86,7 @@ class Dashboard extends Component{
             method: 'PUT',
             data: payload,
             headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem("token"),
+                Authorization: token,
                 content_type: 'application/json',
             },
         })
@@ -101,7 +102,7 @@ class Dashboard extends Component{
             url: `${apiBaseUrl}shoppinglists/`+this.state.id,
             method: 'DELETE',
             headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem("token"),
+                Authorization: token,
                 content_type: 'application/json',
             },
         })
@@ -122,7 +123,7 @@ class Dashboard extends Component{
             method : post,
             data: payload,
             headers : {
-                Authorization : window.localStorage.getItem("token"),
+                Authorization : token,
                 content_type: 'application/json',
             }
         })
@@ -133,6 +134,7 @@ class Dashboard extends Component{
                 console.log(error.data)
             })
     }
+
     render (){
     const shoppinglists =this.state.shoppinglists;
     let x = 0;
