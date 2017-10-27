@@ -136,7 +136,7 @@ class Dashboard extends Component{
     }
     getItems = (event) =>{
         axios({
-            url: `${apiBaseUrl}`+this.state.id+`items`,
+            url: `${apiBaseUrl}`+this.state.id+`items/`,
             method: `get`,
             headers: {
                 Authorization: token,
@@ -149,6 +149,27 @@ class Dashboard extends Component{
             .catch((error) => {
                 console.log(error.data);
             })
+    }
+    editItem = (event) => {
+        let payload = {
+            "name": this.state.name
+        }
+        axios({
+            url: `${apiBaseUrl}shoppinglists`+this.state.id,
+            method: 'PUT',
+            data: payload,
+            headers: {
+                Authorization: token,
+                content_type: 'application/json'
+            }
+        })
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error.data)
+            })
+
     }
 
     render (){
