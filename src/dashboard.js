@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip'
 import * as ReactBootstrap from 'react-bootstrap';
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
-const  token =window.localStorage.getItem("token")
+const token = "Bearer "+window.localStorage.getItem('token');
 class Dashboard extends Component{
     constructor(props){
         super(props);
@@ -47,15 +47,15 @@ class Dashboard extends Component{
             })
             .catch((error) => {
                 console.log(error.response)
-        });
+            });
     }
     addshoppinglist = (event) => {
         var payload = {
             "name": "muthomi"
 
         };
-       console.log(this.state.password);
-       console.log(this.state.shoppinglists)
+        console.log(this.state.password);
+        console.log(this.state.shoppinglists)
         axios({
 
             url: `${apiBaseUrl}shoppinglists/`,
@@ -67,14 +67,14 @@ class Dashboard extends Component{
             },
         })
             .then((response) => {
-            console.log(response.data)
+                console.log(response.data)
 
 
 
-        })
+            })
             .catch((error) => {
-            console.log((error.response))
-        })
+                console.log((error.response))
+            })
     }
     editshoppinglist = (event, id) => {
         var payload = {
@@ -115,12 +115,12 @@ class Dashboard extends Component{
 
     }
     addItem = (event,id) =>{
-        payload = {
+       let payload = {
             'name': this.state.name
         };
         axios({
             url: `${apiBaseUrl}` +this.state.id + `items/`,
-            method : post,
+            method : 'post',
             data: payload,
             headers : {
                 Authorization : token,
@@ -134,10 +134,26 @@ class Dashboard extends Component{
                 console.log(error.data)
             })
     }
+    getItems = (event) =>{
+        axios({
+            url: `${apiBaseUrl}`+this.state.id+`items`,
+            method: `get`,
+            headers: {
+                Authorization: token,
+                content_type: 'application/json'
+            }
+        })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error.data);
+            })
+    }
 
     render (){
-    const shoppinglists =this.state.shoppinglists;
-    let x = 0;
+        const shoppinglists =this.state.shoppinglists;
+        let x = 0;
         return(
             <div>
                 <MainNav/>
@@ -178,22 +194,22 @@ class Dashboard extends Component{
                         <div className="modal-content">
 
 
-                    <div className= "modal-header">
-                        <div className="modal-title">Add a shoppinglist </div>
-                    </div>
-                    <div className="modal-body">
-                        <div className="form">
-                            <div className="form-group">
-                                <input className="form-control" type="text" id="name" placeholder="Enter shopping list Name"
-                                       onChange={(event, newValue) => this.setState({name:newValue})}>
-                            </input>
-                        </div>
-                    </div>
-                    </div>
-                    <div className="modal-footer">
-                        <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal"style = {{float:"left", width: "150px"}} onClick={this.addshoppinglist}>Add</ReactBootstrap.Button>
-                        <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>çlose</ReactBootstrap.Button>
-                    </div>
+                            <div className= "modal-header">
+                                <div className="modal-title">Add a shoppinglist </div>
+                            </div>
+                            <div className="modal-body">
+                                <div className="form">
+                                    <div className="form-group">
+                                        <input className="form-control" type="text" id="name" placeholder="Enter shopping list Name"
+                                               onChange={(event, newValue) => this.setState({name:newValue})}>
+                                        </input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal"style = {{float:"left", width: "150px"}} onClick={this.addshoppinglist}>Add</ReactBootstrap.Button>
+                                <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>çlose</ReactBootstrap.Button>
+                            </div>
                         </div>
                     </div>
 
