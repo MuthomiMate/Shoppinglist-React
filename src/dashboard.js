@@ -113,7 +113,26 @@ class Dashboard extends Component{
             })
 
     }
-   
+    addItem = (event,id) =>{
+        payload = {
+            'name': this.state.name
+        };
+        axios({
+            url: `${apiBaseUrl}` +this.state.id + `items/`,
+            method : post,
+            data: payload,
+            headers : {
+                Authorization : window.localStorage.getItem("token"),
+                content_type: 'application/json',
+            }
+        })
+            .then((response) =>{
+                console.log(response.data)
+            })
+            .catch((error) =>{
+                console.log(error.data)
+            })
+    }
     render (){
     const shoppinglists =this.state.shoppinglists;
     let x = 0;
