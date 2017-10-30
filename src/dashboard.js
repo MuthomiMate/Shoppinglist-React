@@ -9,6 +9,8 @@ const token = "Bearer "+window.localStorage.getItem('token');
 class Dashboard extends Component{
     constructor(props){
         super(props);
+
+        this.getItems = this.getItems.bind(this);
         this.state = {
             shoppinglists: [],
             items: [],
@@ -20,10 +22,6 @@ class Dashboard extends Component{
 
     componentDidMount(){
         this.getshoppinglists();
-    }
-    componentDidUpdate(){
-        this.getItems();
-
     }
 
 
@@ -56,7 +54,7 @@ class Dashboard extends Component{
     }
     addshoppinglist = (event) => {
         let payload = {
-            "name": "muthomi"
+            "name": this.state.name
 
         };
         console.log(this.state.password);
@@ -245,7 +243,7 @@ class Dashboard extends Component{
                                 <div className="form">
                                     <div className="form-group">
                                         <input className="form-control" type="text" id="name" placeholder="Enter shopping list Name"
-                                               onChange={(event, newValue) => this.setState({name:newValue})}>
+                                               onChange={(event) => this.setState({name:event.target.value})}>
                                         </input>
                                     </div>
                                 </div>
@@ -332,7 +330,8 @@ class Dashboard extends Component{
                                             <tr className="buckets" key = {items.id}>
                                                 <td><i>{++x}</i></td>
                                                 <td>{shoppinglists.name} </td>
-                                                <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#items" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
+                                                <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#items" onClick={(event=>this.setState({  id: shoppinglists.id ,
+                                                    name:shoppinglists.name }))}></div></td>
                                                 <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deletes" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
                                             </tr>
                                         ))
