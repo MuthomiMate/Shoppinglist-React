@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Register from './Register'
+import ShoppingItems from './shoppingItems'
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 import Login from "./Login";
@@ -13,6 +14,7 @@ ReactDOM.render(
         <Route exact path = "/" component ={Register}/>
         <Route exact path="/login" component={Login}/>
         <Route exact path="/dashboard" component={Dashboard}/>
+        <Route  path= {`shoppinglist/:id/items`} component={ShoppingItems}/>
     </Switch>
 </Router>, document.getElementById('root'),
 );

@@ -1,37 +1,53 @@
 import React, {Component} from 'react';
+import axios from 'axios'
+import * as ReactBootstrap from 'react-bootstrap';
 
+const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/';
+
+const token = "Bearer "+window.localStorage.getItem('token');
 class ShoppingItems extends Component {
     constructor (props){
         super(props);
+        console.log(props);
         this.state = {
             name : "",
             id: "",
             items: []
 
         }
+
+
+    }
+    componentDidMount(){
+        this.getItems()
     }
     getItems = () =>{
-        id = this.props(id)
-        
+        console.log(this.props.id);
         axios({
-            url: `${apiBaseUrl}`+id+`items/`,
-            method: `get`,
+            url: `${apiBaseUrl}`+this.props.id+`/items/`,
+            method: `GET`,
             headers: {
                 Authorization: token,
-                content_type: 'application/json'
-            }
+                content_type: 'application/json',
+            },
+
         })
+
             .then((response) => {
                 console.log(response.data);
             })
             .catch((error) => {
                 console.log(error.data);
             })
-    }
+
+    };
     render (){
+        let x =0;
+
+        const items = this.state.items;
         return(
         <div>
-        <div className = "modal " id="items" role="dialog" data-backdrop="false">
+        <div className = "modal" id="items" role="dialog" data-backdrop="false" style={{display: this.props.showComponent ? 'block' : 'none'}} >
             <div className="modal-dialog">
                 <div className="modal-content">
 
@@ -54,10 +70,9 @@ class ShoppingItems extends Component {
                                 items.map((items) => (
                                     <tr className="buckets" key = {items.id}>
                                         <td><i>{++x}</i></td>
-                                        <td>{shoppinglists.name} </td>
-                                        <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#items" onClick={(event=>this.setState({  id: shoppinglists.id ,
-                                            name:shoppinglists.name }))}></div></td>
-                                        <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deletes" onClick={(event=>this.setState({  id: shoppinglists.id  }))}></div></td>
+                                        <td>mmm</td>
+                                        <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#items" ></div></td>
+                                        <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deletes"></div></td>
                                     </tr>
                                 ))
                             }
@@ -65,7 +80,7 @@ class ShoppingItems extends Component {
                         </ReactBootstrap.Table>
                     </div>
                     <div className="modal-footer">
-                        <ReactBootstrap.Button bsStyle="primary" data-dismiss = "modal" style = {{float: "right", width: "150px"}}>Cancel</ReactBootstrap.Button>
+                        <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style = {{float: "right", width: "150px"}}>Cancel</ReactBootstrap.Button>
                     </div>
                 </div>
             </div>
@@ -76,3 +91,4 @@ class ShoppingItems extends Component {
 
 
 }
+export default ShoppingItems
