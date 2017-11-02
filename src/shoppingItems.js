@@ -12,6 +12,7 @@ class ShoppingItems extends Component {
         this.state = {
             name : "",
             id: "",
+            msg: "",
             items: []
 
         }
@@ -35,6 +36,10 @@ class ShoppingItems extends Component {
 
             .then((response) => {
                 console.log(response.data);
+                if(response.data!=[]){
+                    this.setState({msg: response.data.message })
+                }
+                console.log(this.state.msg)
             })
             .catch((error) => {
                 console.log(error.data);
@@ -56,6 +61,7 @@ class ShoppingItems extends Component {
                         <div className="modal-title text-center"> {this.state.name}</div>
                     </div>
                     <div className="modal-body">
+                        {this.state.msg ? <div className="Alert alert-danger">{this.state.msg} </div>:
                         <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
                             <thead className="bg-info">
                             <tr>
@@ -77,7 +83,7 @@ class ShoppingItems extends Component {
                                 ))
                             }
                             </tbody>
-                        </ReactBootstrap.Table>
+                        </ReactBootstrap.Table>}
                     </div>
                     <div className="modal-footer">
                         <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style = {{float: "right", width: "150px"}}>Cancel</ReactBootstrap.Button>
