@@ -61,7 +61,11 @@ class ShoppingItems extends Component {
                         <div className="modal-title text-center"> {this.state.name}</div>
                     </div>
                     <div className="modal-body">
-                        {this.state.msg ? <div className="Alert alert-danger">{this.state.msg} </div>:
+                        <div className="panel panel-success">
+                            <div className="panel-heading"></div>
+                            <div className="panel-body">
+                                <ReactBootstrap.Button bsStyle="primary" style = {{ width: "150px"}}>Add  Item</ReactBootstrap.Button>
+                                {this.state.msg ? <div className="Alert alert-danger" style={{marginTop:"20px"}}>{this.state.msg} </div>:
                         <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
                             <thead className="bg-info">
                             <tr>
@@ -85,14 +89,18 @@ class ShoppingItems extends Component {
                             </tbody>
                         </ReactBootstrap.Table>}
                     </div>
+                        </div>
+                    </div>
                     <div className="modal-footer">
                         <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style = {{float: "right", width: "150px"}}>Cancel</ReactBootstrap.Button>
                     </div>
+                            </div>
+
                 </div>
             </div>
 
         </div>
-        </div>
+
         )}
 
 
