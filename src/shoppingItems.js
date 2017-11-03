@@ -39,13 +39,71 @@ class ShoppingItems extends Component {
                 if(response.data!=[]){
                     this.setState({msg: response.data.message })
                 }
-                console.log(this.state.msg)
+                this.setState({items: response.data})
             })
             .catch((error) => {
                 console.log(error.data);
             })
 
     };
+    addItem = (event) =>{
+        let payload = {
+            'name': this.state.name
+        };
+        axios({
+            url: `${apiBaseUrl}` +this.props.id + `/items/`,
+            method : 'post',
+            data: payload,
+            headers : {
+                Authorization : token,
+                content_type: 'application/json',
+            }
+        })
+            .then((response) =>{
+                console.log(response.data)
+            })
+            .catch((error) =>{
+                console.log(error.data)
+            })
+    }
+    editItem = (event) => {
+        let payload = {
+            "name": this.state.name
+        }
+        axios({
+            url: `${apiBaseUrl}items/`+this.state.id,
+            method: 'PUT',
+            data: payload,
+            headers: {
+                Authorization: token,
+                content_type: 'application/json'
+            }
+        })
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error.data)
+            })
+
+    }
+    deleteItem = (event) => {
+        axios({
+            url: `${apiBaseUrl}items/`+this.state.id,
+            method: 'DELETE',
+            headers: {
+                Authorization: token,
+                content_type: 'application/json'
+            }
+        })
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error.data)
+            })
+
+    }
     render (){
         let x =0;
 
@@ -58,13 +116,13 @@ class ShoppingItems extends Component {
 
 
                     <div className= "modal-header">
-                        <div className="modal-title text-center"> {this.state.name}</div>
+                        <div className="modal-title text-center"> {this.props.name}</div>
                     </div>
                     <div className="modal-body">
                         <div className="panel panel-success">
                             <div className="panel-heading"></div>
                             <div className="panel-body">
-                                <ReactBootstrap.Button bsStyle="primary" style = {{ width: "150px"}}>Add  Item</ReactBootstrap.Button>
+                                <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#additem" style = {{ width: "150px"}}>Add  Item</ReactBootstrap.Button>
                                 {this.state.msg ? <div className="Alert alert-danger" style={{marginTop:"20px"}}>{this.state.msg} </div>:
                         <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
                             <thead className="bg-info">
@@ -77,12 +135,13 @@ class ShoppingItems extends Component {
                             </thead>
                             <tbody>
                             {
+
                                 items.map((items) => (
-                                    <tr className="buckets" key = {items.id}>
+                                    <tr key = {items.id}>
                                         <td><i>{++x}</i></td>
-                                        <td>mmm</td>
-                                        <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#items" ></div></td>
-                                        <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deletes"></div></td>
+                                        <td>{items.name}</td>
+                                        <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#edititem" onClick={(event => this.setState({id: items.id}))}></div></td>
+                                        <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deleteitem" onClick={(event => this.setState({id: items.id}))}></div></td>
                                     </tr>
                                 ))
                             }
@@ -97,6 +156,98 @@ class ShoppingItems extends Component {
                             </div>
 
                 </div>
+            </div>
+            <div className="modal " id="additem" role="dialog" data-backdrop="false">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+
+
+                        <div className="modal-header">
+                            <div className="modal-title">Add Item</div>
+                        </div>
+                        <div className="modal-body">
+                            <div className="form">
+                                <div className="form-group">
+                                    <input className="form-control" type="text" id="name"
+                                           placeholder="Enter an item Name"
+                                           onChange={(event) => this.setState({name: event.target.value})}>
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal"
+                                                   style={{float: "left", width: "150px"}}
+                                                   onClick={this.addItem}>Add</ReactBootstrap.Button>
+                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
+                                float: "right",
+                                width: "150px"
+                            }}>çlose</ReactBootstrap.Button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div className="modal " id="edititem" role="dialog" data-backdrop="false">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+
+
+                        <div className="modal-header">
+                            <div className="modal-title"> Edit this item</div>
+                        </div>
+                        <div className="modal-body">
+                            <div className="form">
+                                <div className="form-group">
+                                    <input className="form-control" type="text" id="name"
+                                           placeholder="Enter new shopping list Name"
+                                           onChange={(event) => this.setState({name: event.target.value})}>
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal"
+                                                   style={{float: "left", width: "150px"}}
+                                                   onClick={this.editItem}>Add</ReactBootstrap.Button>
+                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
+                                float: "right",
+                                width: "150px"
+                            }}>çlose</ReactBootstrap.Button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div className="modal " id="deleteitem" role="dialog" data-backdrop="false">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+
+
+                        <div className="modal-header">
+                            <div className="modal-title text-center"> Delete Item</div>
+                        </div>
+                        <div className="modal-body">
+                            <div className="form">
+                                <div>
+                                    <div><h4 className="text-center">Are you sure you want to Delete this
+                                        Item</h4></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <ReactBootstrap.Button bsStyle="danger" data-dismiss="modal"
+                                                   style={{float: "left", width: "150px"}}
+                                                   onClick={this.deleteItem}>OK</ReactBootstrap.Button>
+                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
+                                float: "right",
+                                width: "150px"
+                            }}>Cancel</ReactBootstrap.Button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
