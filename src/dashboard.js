@@ -119,68 +119,12 @@ class Dashboard extends Component{
             })
 
     };
-    handleClick(id, e){
-        this.setState({showComponent: true, id: id});
-    }
-    addItem = (event,id) =>{
-       let payload = {
-            'name': this.state.name
-        };
-        axios({
-            url: `${apiBaseUrl}` +this.state.id + `items/`,
-            method : 'post',
-            data: payload,
-            headers : {
-                Authorization : token,
-                content_type: 'application/json',
-            }
-        })
-            .then((response) =>{
-                console.log(response.data)
-            })
-            .catch((error) =>{
-                console.log(error.data)
-            })
+    handleClick(id, name, e){
+        this.setState({showComponent: true, id: id, name: name});
     }
 
-    editItem = (event) => {
-        let payload = {
-            "name": this.state.name
-        }
-        axios({
-            url: `${apiBaseUrl}shoppinglists/`+this.state.id,
-            method: 'PUT',
-            data: payload,
-            headers: {
-                Authorization: token,
-                content_type: 'application/json'
-            }
-        })
-            .then((response) => {
-                console.log(response.data)
-            })
-            .catch((error) => {
-                console.log(error.data)
-            })
 
-    }
-    deleteItem = (event) => {
-        axios({
-            url: `${apiBaseUrl}shoppinglists/`+this.state.id,
-            method: 'DELETE',
-            headers: {
-                Authorization: token,
-                content_type: 'application/json'
-            }
-        })
-            .then((response) => {
-                console.log(response.data)
-            })
-            .catch((error) => {
-                console.log(error.data)
-            })
 
-    }
 
     render () {
 
@@ -218,7 +162,7 @@ class Dashboard extends Component{
                                             <td>
                                                 <div className="button btn-primary glyphicon glyphicon-eye-open"
                                                      data-toggle="modal" data-target="#items"
-                                                     onClick={(e) => this.handleClick(shoppinglists.id, e)}></div>
+                                                     onClick={(e) => this.handleClick(shoppinglists.id, shoppinglists.name, e)}></div>
                                             </td>
                                             <td>
                                                 <div className="button btn-success glyphicon glyphicon-pencil"
@@ -275,7 +219,7 @@ class Dashboard extends Component{
 
 
                                 <div className="modal-header">
-                                    <div className="modal-title"> Edit this bucket</div>
+                                    <div className="modal-title"> Edit this shopping list</div>
                                 </div>
                                 <div className="modal-body">
                                     <div className="form">
