@@ -14,7 +14,7 @@ ReactDOM.render(
         <Route exact path = "/" component ={Register}/>
         <Route exact path="/login" component={Login}/>
         <Route exact path="/dashboard" component={Dashboard}/>
-        <Route  path= {`shoppinglist/:id/items`} component={ShoppingItems}/>
+        <Route  path= {"/:id/items"} component={ShoppingItems}/>
     </Switch>
 </Router>, document.getElementById('root'),
 );

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios'
 import * as ReactBootstrap from 'react-bootstrap';
+import MainNav from "./navbar"
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/';
 
@@ -8,7 +9,7 @@ const token = "Bearer "+window.localStorage.getItem('token');
 class ShoppingItems extends Component {
     constructor (props){
         super(props);
-        console.log(props);
+        console.log(this.props.match.params.id)
         this.state = {
             name : "",
             id: "",
@@ -25,7 +26,7 @@ class ShoppingItems extends Component {
     getItems = () =>{
         console.log(this.props.id);
         axios({
-            url: `${apiBaseUrl}`+this.props.id+`/items/`,
+            url: `${apiBaseUrl}${this.props.match.params.id}/items/`,
             method: `GET`,
             headers: {
                 Authorization: token,
@@ -51,7 +52,7 @@ class ShoppingItems extends Component {
             'name': this.state.name
         };
         axios({
-            url: `${apiBaseUrl}` +this.props.id + `/items/`,
+            url: `${apiBaseUrl}${this.props.match.params.id}/items/`,
             method : 'post',
             data: payload,
             headers : {
@@ -71,7 +72,7 @@ class ShoppingItems extends Component {
             "name": this.state.name
         }
         axios({
-            url: `${apiBaseUrl}items/`+this.state.id,
+            url: `${apiBaseUrl}items/${this.state.id}`,
             method: 'PUT',
             data: payload,
             headers: {
@@ -89,7 +90,7 @@ class ShoppingItems extends Component {
     }
     deleteItem = (event) => {
         axios({
-            url: `${apiBaseUrl}items/`+this.state.id,
+            url: `${apiBaseUrl}items/${this.state.id}`,
             method: 'DELETE',
             headers: {
                 Authorization: token,
@@ -109,51 +110,39 @@ class ShoppingItems extends Component {
 
         const items = this.state.items;
         return(
-        <div>
-        <div className = "modal" id="items" role="dialog" data-backdrop="false" style={{display: this.props.showComponent ? 'block' : 'none'}} >
-            <div className="modal-dialog">
-                <div className="modal-content">
+                <div>
+                    <MainNav/>
 
-
-                    <div className= "modal-header">
-                        <div className="modal-title text-center"> {this.props.name}</div>
+            <div className=" col-lg-offset-2 col-md-8 ">
+                <div className="panel panel-success">
+                    <div className="panel-heading">shopping Items</div>
+                    <div className="panel-body">
+                    <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#adds">Add
+                        Item</ReactBootstrap.Button>
+                    {this.state.msg ? <div className="Alert alert-danger" style={{marginTop:"20px"}}>{this.state.msg} </div>:
+                    <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
+                        <thead className="bg-info">
+                        <tr>
+                            <th></th>
+                            <th>Item Name</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            items.map((items) => (
+                                <tr key = {items.id}>
+                                    <td><i>{++x}</i></td>
+                                    <td>{items.name}</td>
+                                    <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#edititem" onClick={(event => this.setState({id: items.id}))}></div></td>
+                                    <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deleteitem" onClick={(event => this.setState({id: items.id}))}></div></td>
+                                </tr>
+                            ))
+                        }
+                        </tbody>
+                    </ReactBootstrap.Table>}
                     </div>
-                    <div className="modal-body">
-                        <div className="panel panel-success">
-                            <div className="panel-heading"></div>
-                            <div className="panel-body">
-                                <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#additem" style = {{ width: "150px"}}>Add  Item</ReactBootstrap.Button>
-                                {this.state.msg ? <div className="Alert alert-danger" style={{marginTop:"20px"}}>{this.state.msg} </div>:
-                        <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
-                            <thead className="bg-info">
-                            <tr>
-                                <th></th>
-                                <th>Item Name</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-
-                                items.map((items) => (
-                                    <tr key = {items.id}>
-                                        <td><i>{++x}</i></td>
-                                        <td>{items.name}</td>
-                                        <td><div className= "button btn-success glyphicon glyphicon-pencil" data-toggle="modal" data-target="#edititem" onClick={(event => this.setState({id: items.id}))}></div></td>
-                                        <td><div className= "button btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deleteitem" onClick={(event => this.setState({id: items.id}))}></div></td>
-                                    </tr>
-                                ))
-                            }
-                            </tbody>
-                        </ReactBootstrap.Table>}
-                    </div>
-                        </div>
-                    </div>
-                    <div className="modal-footer">
-                        <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style = {{float: "right", width: "150px"}}>Cancel</ReactBootstrap.Button>
-                    </div>
-                            </div>
 
                 </div>
             </div>
@@ -200,7 +189,7 @@ class ShoppingItems extends Component {
                             <div className="form">
                                 <div className="form-group">
                                     <input className="form-control" type="text" id="name"
-                                           placeholder="Enter new shopping list Name"
+                                           placeholder="Enter new Item Name"
                                            onChange={(event) => this.setState({name: event.target.value})}>
                                     </input>
                                 </div>

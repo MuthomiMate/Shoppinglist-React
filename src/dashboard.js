@@ -119,8 +119,11 @@ class Dashboard extends Component{
             })
 
     };
-    handleClick(id, name, e){
-        this.setState({showComponent: true, id: id, name: name});
+    handleClick(id, e){
+        console.log(id)
+        this.setState({ id: id});
+        this.props.history.push( `${id}/items`);
+        console.log(this.state.id)
     }
 
 
@@ -133,8 +136,8 @@ class Dashboard extends Component{
             return (
                 <div>
                     <MainNav/>
-                    {this.state.showComponent ?
-                    <ShoppingItems id={this.state.id} showComponent={ this.state.showComponent }/>: ""}
+                    {/*{this.state.showComponent ?*/}
+                    {/*<ShoppingItems id={this.state.id} showComponent={ this.state.showComponent }/>: ""}*/}
 
                     <div className=" col-lg-offset-2 col-md-8 ">
                         <div className="panel panel-success">
@@ -162,7 +165,7 @@ class Dashboard extends Component{
                                             <td>
                                                 <div className="button btn-primary glyphicon glyphicon-eye-open"
                                                      data-toggle="modal" data-target="#items"
-                                                     onClick={(e) => this.handleClick(shoppinglists.id, shoppinglists.name, e)}></div>
+                                                     onClick={(e) => this.handleClick(shoppinglists.id, e)}></div>
                                             </td>
                                             <td>
                                                 <div className="button btn-success glyphicon glyphicon-pencil"
