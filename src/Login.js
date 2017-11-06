@@ -56,10 +56,15 @@ class Login extends  Component{
 
         axios.post(apiBaseUrl + 'auth/login', payload)
             .then((response) => {
+            if (response.data.message == "You logged in successfully."){
                 console.log(payload);
-                 console.log(response.data.access_token);
+                console.log(response.data.access_token);
                 window.localStorage.setItem('token', response.data.access_token);
                 this.props.history.push("/dashboard");
+            }else{
+                console.log(response.data)
+            }
+
 
 
 
@@ -69,7 +74,7 @@ class Login extends  Component{
                 // if (error.response){
                 //     alert(error.response.data.message)
                 // }
-                this.props.history.push("/dashboard");
+                // this.props.history.push("/dashboard");
             });
     }
 }
