@@ -17,9 +17,14 @@ class Dashboard extends Component{
             msg: '',
             id : '',
             name: '',
-            showComponent: false
+            showComponent: false,
+            next: "",
+            prev: ""
         };
         this.handleClick = this.handleClick.bind(this);
+        this.getshoppinglistnext =this.getshoppinglistnext.bind(this)
+        this.getshoppinglistprev =this.getshoppinglistprev.bind(this)
+        this.getshoppinglists=this.getshoppinglists.bind(this)
     }
 
     componentDidMount(){
@@ -45,9 +50,107 @@ class Dashboard extends Component{
                     });
 
                 }
+                if (response.data.previous_page != "None"){
+                    this.setState({prev:response.data.previous_page});
+                }
+                else{
+                    this.setState({prev:''});
+                }
+                if (response.data.next_page != "None"){
+                    this.setState({next:response.data.next_page});
+                }else{
+                    this.setState({next:''});
+                }
+
                 this.setState({
-                    shoppinglists:response.data,
+                    shoppinglists:response.data.shopping_lists
+
                 });
+
+
+            })
+            .catch((error) => {
+                console.log(error.response)
+            });
+    }
+    getshoppinglistnext (){
+
+        axios({
+            url: `${apiBaseUrl}shoppinglists/${this.state.next}`,
+            method: 'get',
+            headers: {
+                Authorization: token,
+                content_type: 'application/json',
+            },
+
+        })
+            .then((response) => {
+                console.log(response.data)
+                if(response.data.message === "You do not have  any shopping list"){
+                    this.setState({
+                        msg: response.data.message,
+                    });
+
+                }
+                if (response.data.previous_page != "None"){
+                    this.setState({prev:response.data.previous_page});
+                }else {
+                    this.setState({prev:''});
+                }
+                if (response.data.next_page != "None"){
+                    this.setState({next:response.data.next_page});
+                }else {
+                    this.setState({next:''});
+                }
+
+                this.setState({
+                    shoppinglists:response.data.shopping_lists
+
+                });
+
+
+            })
+            .catch((error) => {
+                console.log(error.response)
+            });
+    }
+    getshoppinglistprev (){
+        console.log(this.state.prev)
+        axios({
+            url: `${apiBaseUrl}shoppinglists/${this.state.prev}`,
+            method: 'get',
+            headers: {
+                Authorization: token,
+                content_type: 'application/json',
+            },
+
+        })
+            .then((response) => {
+                console.log(response.data)
+                if(response.data.message === "You do not have  any shopping list"){
+                    this.setState({
+                        msg: response.data.message,
+                    });
+
+                }
+                if (response.data.previous_page != "None"){
+                    this.setState({prev:response.data.previous_page});
+                }else {
+                    this.setState({prev:''});
+                }
+                if (response.data.next_page != "None"){
+                    this.setState({next:response.data.next_page});
+                }else {
+                    this.setState({next:''});
+                }
+                console.log(this.state.prev)
+
+
+                this.setState({
+                    shoppinglists:response.data.shopping_lists
+
+                });
+
 
             })
             .catch((error) => {
@@ -59,8 +162,6 @@ class Dashboard extends Component{
             "name": this.state.name
 
         };
-        console.log(this.state.password);
-        console.log(this.state.shoppinglists)
         axios({
 
             url: `${apiBaseUrl}shoppinglists/`,
@@ -142,9 +243,11 @@ class Dashboard extends Component{
                     <div className=" col-lg-offset-2 col-md-8 ">
                         <div className="panel panel-success">
                             <div className="panel-heading">shoppinglist</div>
-                            <div className="panel-body">{this.state.msg}</div>
+                            <div className="panel-body">{this.state.msg}
                             <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#adds">Add
                                 Shopping List</ReactBootstrap.Button>
+                            {this.state.shoppinglists?
+                                <div>
                             <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
                                 <thead className="bg-info">
                                 <tr>
@@ -183,6 +286,12 @@ class Dashboard extends Component{
                                 </tbody>
                             </ReactBootstrap.Table>
 
+                        <div style={{float: "right"} }>
+                            {this.state.prev ?<div className="button btn-primary" onClick={this.getshoppinglistprev }>Prev</div>: ""}
+                            {this.state.next ?<div className="button btn-primary" onClick={this.getshoppinglistnext } >Next</div>: ""}
+                        </div>
+                        </div>: ""}
+                    </div>
                         </div>
                     </div>
                     <div className="modal " id="adds" role="dialog" data-backdrop="false">
