@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import MainNav from "./navbar"
-import ShoppingItems from "./shoppingItems"
 import axios from "axios"
-import ReactTooltip from 'react-tooltip'
 import * as ReactBootstrap from 'react-bootstrap';
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
@@ -17,6 +15,7 @@ class Dashboard extends Component{
             msg: '',
             id : '',
             name: '',
+            search: '',
             showComponent: false,
             next: "",
             prev: ""
@@ -248,6 +247,14 @@ class Dashboard extends Component{
                                 Shopping List</ReactBootstrap.Button>
                             {this.state.shoppinglists?
                                 <div>
+                                    <div style={{marginTop: '10px', width: '100%'}}>
+                                        <div className="form form-group" style={{display: "inline-block", width: '40%', marginLeft: '20%'}}>
+                                            <input className="form-control" type="text" placeholder="Search shoppingList" />
+                                        </div>
+                                        <div style={{ display: 'inline-block', width: '20%', paddingLeft: '10%'}}>
+                                        <ReactBootstrap.Button bsStyle="primary" >Search</ReactBootstrap.Button>
+                                        </div>
+                                    </div>
                             <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
                                 <thead className="bg-info">
                                 <tr>
