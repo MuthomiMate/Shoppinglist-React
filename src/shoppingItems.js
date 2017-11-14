@@ -9,14 +9,18 @@ const token = "Bearer "+window.localStorage.getItem('token');
 class ShoppingItems extends Component {
     constructor (props){
         super(props);
-        console.log(this.props.match.params.id)
+
         this.state = {
             name : "",
             id: "",
             msg: "",
+            next: "",
+            prev: "",
             items: []
 
         }
+        this.getItemsnext=this.getItemsnext.bind(this)
+        this.getItemsprev=this.getItemsprev.bind(this)
 
 
     }
@@ -39,8 +43,86 @@ class ShoppingItems extends Component {
                 console.log(response.data);
                 if(response.data!=[]){
                     this.setState({msg: response.data.message })
+                }if (response.data.previous_page !== "None"){
+                    this.setState({prev:response.data.previous_page});
                 }
-                this.setState({items: response.data})
+                else{
+                    this.setState({prev:''});
+                }
+                if (response.data.next_page !== "None"){
+                    this.setState({next:response.data.next_page});
+                }else{
+                    this.setState({next:''});
+                }
+                this.setState({items: response.data.shopping_lists})
+            })
+            .catch((error) => {
+                console.log(error.data);
+            })
+
+    };
+    getItemsnext = () =>{
+        console.log(this.props.id);
+        axios({
+            url: `${apiBaseUrl}${this.props.match.params.id}/items/${this.state.next}`,
+            method: `GET`,
+            headers: {
+                Authorization: token,
+                content_type: 'application/json',
+            },
+
+        })
+
+            .then((response) => {
+                console.log(response.data);
+                if(response.data!=[]){
+                    this.setState({msg: response.data.message })
+                }if (response.data.previous_page !== "None"){
+                    this.setState({prev:response.data.previous_page});
+                }
+                else{
+                    this.setState({prev:''});
+                }
+                if (response.data.next_page !== "None"){
+                    this.setState({next:response.data.next_page});
+                }else{
+                    this.setState({next:''});
+                }
+                this.setState({items: response.data.shopping_lists})
+            })
+            .catch((error) => {
+                console.log(error.data);
+            })
+
+    };
+    getItemsprev = () =>{
+        console.log(this.props.id);
+        axios({
+            url: `${apiBaseUrl}${this.props.match.params.id}/items/${this.state.prev}`,
+            method: `GET`,
+            headers: {
+                Authorization: token,
+                content_type: 'application/json',
+            },
+
+        })
+
+            .then((response) => {
+                console.log(response.data);
+                if(response.data!=[]){
+                    this.setState({msg: response.data.message })
+                }if (response.data.previous_page !== "None"){
+                    this.setState({prev:response.data.previous_page});
+                }
+                else{
+                    this.setState({prev:''});
+                }
+                if (response.data.next_page !== "None"){
+                    this.setState({next:response.data.next_page});
+                }else{
+                    this.setState({next:''});
+                }
+                this.setState({items: response.data.shopping_lists})
             })
             .catch((error) => {
                 console.log(error.data);
@@ -61,7 +143,7 @@ class ShoppingItems extends Component {
             }
         })
             .then((response) =>{
-                console.log(response.data)
+
             })
             .catch((error) =>{
                 console.log(error.data)
@@ -117,7 +199,7 @@ class ShoppingItems extends Component {
                 <div className="panel panel-success">
                     <div className="panel-heading">shopping Items</div>
                     <div className="panel-body">
-                    <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#adds">Add
+                    <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#additem">Add
                         Item</ReactBootstrap.Button>
                     {this.state.msg ? <div className="Alert alert-danger" style={{marginTop:"20px"}}>{this.state.msg} </div>:
                     <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
@@ -142,6 +224,10 @@ class ShoppingItems extends Component {
                         }
                         </tbody>
                     </ReactBootstrap.Table>}
+                        <div style={{float:'right'}} >
+                            {this.state.next?<div style={{padding: '5px', display: 'inline-block'}} onClick={this.getItemsnext}><ReactBootstrap.Button bsStyle="primary" >Next</ReactBootstrap.Button></div>: ""}
+                            {this.state.prev?<div style={{display: 'inline-block'}} onClick={this.getItemsprev}><ReactBootstrap.Button bsStyle="primary" >prev</ReactBootstrap.Button></div>:""}
+                    </div>
                     </div>
 
                 </div>
