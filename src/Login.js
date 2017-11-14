@@ -58,11 +58,12 @@ class Login extends  Component{
             .then((response) => {
             if (response.data.message == "You logged in successfully."){
                 console.log(payload);
-                console.log(response.data.access_token);
                 window.localStorage.setItem('token', response.data.access_token);
+                window.localStorage.setItem('name', response.data.name);
                 this.props.history.push("/dashboard");
             }else{
                 console.log(response.data)
+                this.props.history.push("/login");
             }
 
 
@@ -75,6 +76,7 @@ class Login extends  Component{
                 //     alert(error.response.data.message)
                 // }
                 // this.props.history.push("/dashboard");
+                this.props.history.push("/login");
             });
     }
 }
