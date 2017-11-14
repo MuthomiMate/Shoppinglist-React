@@ -21,6 +21,7 @@ class Dashboard extends Component{
             prev: ""
         };
         this.handleClick = this.handleClick.bind(this);
+        this.searchShoppinglist = this.searchShoppinglist.bind(this)
         this.getshoppinglistnext =this.getshoppinglistnext.bind(this)
         this.getshoppinglistprev =this.getshoppinglistprev.bind(this)
         this.getshoppinglists=this.getshoppinglists.bind(this)
@@ -49,13 +50,13 @@ class Dashboard extends Component{
                     });
 
                 }
-                if (response.data.previous_page != "None"){
+                if (response.data.previous_page !== "None"){
                     this.setState({prev:response.data.previous_page});
                 }
                 else{
                     this.setState({prev:''});
                 }
-                if (response.data.next_page != "None"){
+                if (response.data.next_page !== "None"){
                     this.setState({next:response.data.next_page});
                 }else{
                     this.setState({next:''});
@@ -91,12 +92,12 @@ class Dashboard extends Component{
                     });
 
                 }
-                if (response.data.previous_page != "None"){
+                if (response.data.previous_page !== "None"){
                     this.setState({prev:response.data.previous_page});
                 }else {
                     this.setState({prev:''});
                 }
-                if (response.data.next_page != "None"){
+                if (response.data.next_page !== "None"){
                     this.setState({next:response.data.next_page});
                 }else {
                     this.setState({next:''});
@@ -132,12 +133,12 @@ class Dashboard extends Component{
                     });
 
                 }
-                if (response.data.previous_page != "None"){
+                if (response.data.previous_page !== "None"){
                     this.setState({prev:response.data.previous_page});
                 }else {
                     this.setState({prev:''});
                 }
-                if (response.data.next_page != "None"){
+                if (response.data.next_page !== "None"){
                     this.setState({next:response.data.next_page});
                 }else {
                     this.setState({next:''});
@@ -219,6 +220,29 @@ class Dashboard extends Component{
             })
 
     };
+    searchShoppinglist =(event) => {
+        axios({
+            url: `${apiBaseUrl}shoppinglists/?q=${this.state.search}`,
+            method: 'GET',
+            headers : {
+                Authorization: token,
+                content_type: 'application/json',
+            },
+        })
+            .then((response) => {
+                console.log(response.data)
+                if(response.data.message==="Shopping list name does not exist") {
+                    this.setState({msg: response.data.message})
+
+                }
+                else {
+                    this.setState({shoppinglists: response.data})
+                }
+            })
+            .catch((error) => {
+                console.log(error.data)
+            })
+    }
     handleClick(id, e){
         console.log(id)
         this.setState({ id: id});
@@ -248,11 +272,11 @@ class Dashboard extends Component{
                             {this.state.shoppinglists?
                                 <div>
                                     <div style={{marginTop: '10px', width: '100%'}}>
-                                        <div className="form form-group" style={{display: "inline-block", width: '40%', marginLeft: '20%'}}>
-                                            <input className="form-control" type="text" placeholder="Search shoppingList" />
+                                        <div className="form form-group" style={{display: "inline-block", width: '40%', marginLeft: '20%' }}>
+                                            <input className="form-control" type="text" placeholder="Search shoppingList" onChange={(event) => this.setState({search: event.target.value})}/>
                                         </div>
                                         <div style={{ display: 'inline-block', width: '20%', paddingLeft: '10%'}}>
-                                        <ReactBootstrap.Button bsStyle="primary" >Search</ReactBootstrap.Button>
+                                        <ReactBootstrap.Button bsStyle="primary" onClick={this.searchShoppinglist}>Search</ReactBootstrap.Button>
                                         </div>
                                     </div>
                             <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
