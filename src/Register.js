@@ -13,7 +13,8 @@ class Register extends Component {
         var self = this;
         var payload={
             "email":this.state.email,
-            "password":this.state.password
+            "password":this.state.password,
+            "name": `${this.state.first_name} ${this.state.last_name}`
         }
         axios.post(apiBaseUrl+'auth/register', payload)
             .then(function (response) {
@@ -21,7 +22,7 @@ class Register extends Component {
                     //  console.log("registration successfull");
                 var result = response.data.message;
                 if (result == 'You registered successfully. Please log in.'){
-                    console.log(result);
+                    this.props.history.push("/login");
 
                 }else {
                     alert(result);
