@@ -16,11 +16,13 @@ class ShoppingItems extends Component {
             msg: "",
             next: "",
             prev: "",
+            search: "",
             items: []
 
         }
         this.getItemsnext=this.getItemsnext.bind(this)
         this.getItemsprev=this.getItemsprev.bind(this)
+        this.searchitem=this.searchitem.bind(this)
 
 
     }
@@ -129,6 +131,29 @@ class ShoppingItems extends Component {
             })
 
     };
+    searchitem =(event) => {
+        axios({
+            url: `${apiBaseUrl}${this.props.match.params.id}/items/?q=${this.state.search}`,
+            method: 'GET',
+            headers : {
+                Authorization: token,
+                content_type: 'application/json',
+            },
+        })
+            .then((response) => {
+                console.log(response.data)
+                if(response.data.message==="Shopping list name does not exist") {
+                    this.setState({msg: response.data.message})
+
+                }
+                else {
+                    this.setState({items: response.data})
+                }
+            })
+            .catch((error) => {
+                console.log(error.data)
+            })
+    }
     addItem = (event) =>{
         let payload = {
             'name': this.state.name
@@ -202,6 +227,15 @@ class ShoppingItems extends Component {
                     <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#additem">Add
                         Item</ReactBootstrap.Button>
                     {this.state.msg ? <div className="Alert alert-danger" style={{marginTop:"20px"}}>{this.state.msg} </div>:
+                        <div>
+                        <div style={{marginTop: '10px', width: '100%'}}>
+                            <div className="form form-group" style={{display: "inline-block", width: '40%', marginLeft: '20%' }}>
+                                <input className="form-control" type="text" placeholder="Search items" onChange={(event) => this.setState({search: event.target.value})}/>
+                            </div>
+                            <div style={{ display: 'inline-block', width: '20%', paddingLeft: '10%'}}>
+                                <ReactBootstrap.Button bsStyle="primary" onClick={this.searchitem}>Search</ReactBootstrap.Button>
+                            </div>
+                        </div>
                     <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
                         <thead className="bg-info">
                         <tr>
@@ -223,7 +257,8 @@ class ShoppingItems extends Component {
                             ))
                         }
                         </tbody>
-                    </ReactBootstrap.Table>}
+                    </ReactBootstrap.Table></div>}
+
                         <div style={{float:'right'}} >
                             {this.state.next?<div style={{padding: '5px', display: 'inline-block'}} onClick={this.getItemsnext}><ReactBootstrap.Button bsStyle="primary" >Next</ReactBootstrap.Button></div>: ""}
                             {this.state.prev?<div style={{display: 'inline-block'}} onClick={this.getItemsprev}><ReactBootstrap.Button bsStyle="primary" >prev</ReactBootstrap.Button></div>:""}
