@@ -12,6 +12,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.14",
     "react-tap-event-plugin": "^3.0.2",
+    "react-toastify": "^2.2.0",
     "react-tooltip": "^3.4.0"
   },
   "scripts": {

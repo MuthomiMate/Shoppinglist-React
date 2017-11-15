@@ -26,6 +26,7 @@ class Login extends  Component{
                         <AppBar title="Login" style={{backgroundColor: '#2196F3'}}/>
 
                         <Card style = {{width: '40%', marginLeft: '30%', marginTop : '2%'}}>
+                            <div style={{textAlign: "center"}}>
                             <CardHeader title = "Login"/>
                             <CardText>
                         <TextField
@@ -38,10 +39,12 @@ class Login extends  Component{
                         floatingLabelText="Password"
                         onChange={(event, newValue) => this.setState({password:newValue})}/>
                         <br/>
-                                <ReactBootstrap.Button bsStyle="success">Primary</ReactBootstrap.Button>
-                        <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleClick}/>
-                            </CardText>
+                        <RaisedButton label="Submit" primary={true} style={{marginTop: "10px"}} onClick={this.handleClick}/>
+                                <div style={{marginTop: "10px"}}><p>Not Registered. Please <a href={'/'}>sign up</a> </p></div>
+                                <div style={{marginTop: "10px"}}><p> <a href={'/'}>forgot password?</a> </p></div>
+                            </CardText></div>
                         </Card>
+
                     </div>
                 </MuiThemeProvider>
             </div>
