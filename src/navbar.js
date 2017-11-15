@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 
 class MainNav extends Component {
@@ -24,17 +25,14 @@ class MainNav extends Component {
                         <a href="#">shopping List React</a>
                     </Navbar.Brand>
                 </Navbar.Header>
+                <div style={{float:'right'}}>
                 <Nav>
-
-                    {/*<NavItem eventKey={2} href="#">Link</NavItem>*/}
-                    <NavDropdown eventKey={3} title={name} id="basic-nav-dropdown">
-                        <MenuItem eventKey={3.1}>change password</MenuItem>
-                        {/*<MenuItem eventKey={3.2}>Another action</MenuItem>*/}
-                        {/*<MenuItem eventKey={3.3}>Something else here</MenuItem>*/}
+                    <NavDropdown  title={name} id="basic-nav-dropdown">
+                        <MenuItem><Link to="/ccpass">change password</Link></MenuItem>
                     </NavDropdown>
-                    <NavItem className="nav-link" href="#">Logout</NavItem>
+                    <NavItem className="nav-link" href={"/login"}>logout</NavItem>
                 </Nav>
-
+                </div>
             </Navbar>
         )
     }
