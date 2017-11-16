@@ -46,7 +46,7 @@ class PassReset extends Component {
                                     <input type="email" required className="form-control" id="email" placeholder="Enter your Email"onChange={(event)=>this.setState({email:event.target.value})}/>
                                 </div>
                                 <div className="form-group">
-                                    <input type="submit" value="submit" className="btn btn-primary" />
+                                    <input type="submit" value="submit" className="btn btn-primary" id="button" />
                                 </div>
                             </form>
                         </div>
