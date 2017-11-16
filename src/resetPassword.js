@@ -35,7 +35,7 @@ class PassReset extends Component {
     render (){
         return(
             <div>
-                <MainNav/>
+                {/*<MainNav/>*/}
                 <Toaster/>
                 <div className=" col-lg-offset-4 col-md-4 ">
                     <div className="panel panel-success">
