@@ -30,34 +30,63 @@ describe ('<PassReset/>', () =>{
         afterEach(function () {
             moxios.uninstall()
         })
-        it('returns the responses according to inputs', function (done) {
+        it('returns positive responses', function (done) {
 
             const wrapper = mount(<PassReset />);
             const form = wrapper.find('form');
             const input = wrapper.find('#email')
             const event  =
                 {target:{
-                    value: 'muthomi@gmail.com',
+                    value: 'muthomi@gmail.com.com',
                 }};
             input.simulate('change', event)
             form.simulate('submit', { preventDefault() {} })
+            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/passreset', {
+                status: 200,
+                responseText:{ message:'Password has been sent to your email' }
+            })
             moxios.wait(function () {
-                let request = moxios.requests.mostRecent()
-                request.respondWith({
-                    status: 200,
-                    response :{message:"The email has been sent to your email"}
-                })
-                    .then(function () {
-                        toast.success(response.data.message) ;
-
-                    })
+                console.log(wrapper.find('Toaster').text());
+                expect(wrapper.find('Toaster').html()).toContain('Password has been sent to your email');
                 done()
             })
+        })
+        it('returns negative responses', function (done) {
+
+            const wrapper = mount(<PassReset />);
+            const form = wrapper.find('form');
+            const input = wrapper.find('#email')
+            const event  =
+                {target:{
+                    value: 'nn@ghmail.com',
+                }};
+            input.simulate('change', event)
+            form.simulate('submit', { preventDefault() {} })
+            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/passreset', {
+                status: 400,
+                responseText:{ message:'user not registered. Please register ' }
+            })
+            moxios.wait(function () {
+                expect(wrapper.find('Toaster').html()).toContain('user not registered. Please register');
+                done()
+            })
+        })
+            // moxios.wait(function () {
+            //     let request = moxios.requests.mostRecent()
+            //     request.respondWith({
+            //         status: 200,
+            //         response :{message:"The password has been sent to your email"}
+            //     })
+            //         .then(function () {
+            //            expects(toast.success(response.data.message).toEqual('The password has been sent to your email') );
+            //
+            //         })
+            //     done()
+            // })
 
         })
 
-    })
 
-})
+    })
 
 

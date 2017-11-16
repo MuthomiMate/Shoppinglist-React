@@ -29,7 +29,7 @@ class PassReset extends Component {
         })
         .catch((error)=>{
             console.log(error.response)
-            toast.error(error.response.data)
+            toast.error(error.response.data.message)
         })
     }
     render (){
