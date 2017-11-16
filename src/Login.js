@@ -66,7 +66,7 @@ class Login extends  Component{
                 this.props.history.push("/dashboard");
             }else{
                 console.log(response.data)
-                this.props.history.push("/login");
+                // this.props.history.push("/login");
             }
 
 
@@ -74,12 +74,12 @@ class Login extends  Component{
 
             })
             .catch((error) => {
-                // console.log(error.response);
+                console.log(error.response.data.message);
                 // if (error.response){
                 //     alert(error.response.data.message)
                 // }
                 // this.props.history.push("/dashboard");
-                this.props.history.push("/login");
+                // this.props.history.push("/login");
             });
     }
 }
