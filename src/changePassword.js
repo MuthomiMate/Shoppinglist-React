@@ -23,20 +23,15 @@ class ChangePassword extends Component {
             method: 'PUT',
             url: apiBaseUrl,
             data: payload,
-            headers: {
-                Authorization: "Bearer "+window.localStorage.getItem('token'),
-                content_type: 'application/json'
-            }
+            // headers: {
+            //     Authorization: "Bearer "+window.localStorage.getItem('token'),
+            //     content_type: 'application/json'
+            // }
         })
             .then((response) => {
-            console.log(response.data)
-                if(response.data.mesage){
-                    toast.success(response.data.mesage)
-                }
                 toast.success(response.data.message)
             })
             .catch((error) =>{
-                console.log(error)
                 toast.error(error.response.data.message)
             })
     }
@@ -52,13 +47,13 @@ class ChangePassword extends Component {
                     <div className="panel-body">
                         <form onSubmit={this.changePass} >
                             <div className="form-group">
-                                <input type="password" className="form-control" placeholder="Old Password" required onChange={(event) =>this.setState({password:event.target.value})}/>
+                                <input type="password" className="form-control" placeholder="Old Password" id="password" required onChange={(event) =>this.setState({password:event.target.value})}/>
                             </div>
                             <div className='form-group'>
-                                 <input type="password" className="form-control" placeholder="New Password" required onChange={(event) =>this.setState({newPassword:event.target.value})}/>
+                                 <input type="password" className="form-control" placeholder="New Password" id="new_password" required onChange={(event) =>this.setState({newPassword:event.target.value})}/>
                             </div>
                             <div className="form-group">
-                                 <input type="submit" className="btn btn-primary" value="Submit" />
+                                 <input type="submit" className="btn btn-primary" value="Submit" id="submit"/>
                             </div>
                         </form>
                     </div>
