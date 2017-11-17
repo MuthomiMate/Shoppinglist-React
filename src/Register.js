@@ -21,6 +21,7 @@ class Register extends Component {
         this.handleClick=this.handleClick.bind(this)
     }
     handleClick= (event)=>{
+        event.preventDefault();
         var apiBaseUrl = 'https://shopping-list-api-muthomi.herokuapp.com/';
         var payload={
             "email":this.state.email,
@@ -30,6 +31,7 @@ class Register extends Component {
         axios.post(apiBaseUrl+'auth/register', payload)
             .then(function (response) {
                 toast.success(response.data.message)
+                 // this.props.history.push("/login")
             })
             .catch(function (error) {
                 toast.error(error.response.data.message)

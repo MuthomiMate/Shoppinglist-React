@@ -3,7 +3,7 @@ import Register from '../Register'
 import {mount} from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import Toaster from '../sucessToaster'
-import {toast} from 'react-toastify'
+import  moxios from 'moxios'
 import  ReactDOM from 'react-dom'
 import Enzyme from 'enzyme'
 
@@ -63,6 +63,56 @@ describe('<Register/>', () =>{
         };
         pass.simulate('change', { target });
         expect(wrapper.state().password).toEqual(target.value);
+    })
+    describe ('mocking axios requests', function () {
+        beforeEach(function () {
+            moxios.install()
+        })
+        afterEach(function () {
+            moxios.uninstall()
+        })
+        it('registers correctly', function (done) {
+            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/register', {
+                status: 200,
+                responseText:{ message:"You registered successfully. Please log in."}
+            })
+            let param = {"push" : () => {}}
+            const wrapper = mount(<Register history={param} />);
+            const submit = wrapper.find('button#submit')
+            wrapper.setState({first_name:'muthomi'})
+            wrapper.setState({last_name:'mate'})
+            wrapper.setState({email:'muthomimate@gmail.com'})
+            wrapper.setState({password:'pass1234'})
+            submit.simulate('click', { preventDefault() {} })
+
+            moxios.wait(function () {
+                console.log(wrapper.find('Toaster').html());
+                expect(wrapper.find('Toaster').html()).toContain("You registered successfully. Please log in.");
+                done()
+            })
+        })
+        it('refuses incorrect registration', function (done) {
+            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/register', {
+                status: 400,
+                responseText:{ message:"Enter a correct email address" }
+            })
+
+            const wrapper = mount(<Register/>);
+            const submit = wrapper.find('button#submit');
+            wrapper.setState({first_name:'muthomi'})
+            wrapper.setState({last_name:'mate'})
+            wrapper.setState({email:'muthomimatehhh'})
+            wrapper.setState({password:'pass1234'})
+            submit.simulate('click', { preventDefault() {} })
+
+            moxios.wait(function () {
+                console.log(wrapper.find('Toaster').html());
+                expect(wrapper.find('Toaster').html()).toContain("Enter a correct email address");
+                done()
+            })
+        })
+
+
     })
 })
 
