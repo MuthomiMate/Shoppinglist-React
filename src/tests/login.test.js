@@ -5,6 +5,7 @@ import Enzyme from 'enzyme'
 import Toaster from '../sucessToaster'
 import {shallow,mount} from 'enzyme'
 import moxios from 'moxios'
+import './localstorage'
 import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({adapter:new Adapter()})
@@ -41,9 +42,12 @@ describe ('<Login/>', () =>{
         it('logs in correct credentials', function (done) {
             moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/login', {
                 status: 200,
-                responseText:{ message:"You logged in successfully." }
+                responseText:{ message:"You logged in successfully." ,
+                                access_token: "ghhjsjjsjsjsjsjj",
+                                name: "Muthomi"}
             })
-            const wrapper = mount(<Login />);
+            let param = {"push" : () => {}}
+            const wrapper = mount(<Login history={param} />);
             const submit = wrapper.find('button#btn');
             const input = wrapper.find('TextField#email')
             const pass =wrapper.find('TextField#password')
