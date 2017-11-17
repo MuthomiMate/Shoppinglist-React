@@ -51,18 +51,21 @@ class Register extends Component {
                         <TextField
                             hintText="Enter your First Name"
                             floatingLabelText="First Name"
+                            id="fname"
                             onChange = {(event) => this.setState({first_name:event.target.value})}
                         />
                         <br/>
                         <TextField
                             hintText="Enter your Last Name"
                             floatingLabelText="Last Name"
+                            id="lname"
                             onChange = {(event) => this.setState({last_name:event.target.value})}
                         />
                         <br/>
                         <TextField
                             hintText="Enter your Email"
                             type="email"
+                            id="email"
                             floatingLabelText="Email"
                             onChange = {(event) => this.setState({email:event.target.value})}
                         />
@@ -70,11 +73,12 @@ class Register extends Component {
                         <TextField
                             type = "password"
                             hintText="Enter your Password"
+                            id="password"
                             floatingLabelText="Password"
                             onChange = {(event) => this.setState({password:event.target.value})}
                         />
                         <br/>
-                        <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+                        <RaisedButton label="Submit" primary={true} id="submit" style={style} onClick={(event) => this.handleClick(event)}/>
                                 </CardText></div>
                         </Card>
                     </div>
