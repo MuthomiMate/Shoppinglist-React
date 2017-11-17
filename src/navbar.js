@@ -5,16 +5,16 @@ import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 class MainNav extends Component {
     constructor(props){
         super(props);
-        this.logout= this.logout.bind(this)
+        // this.logout= this.logout.bind(this)
 
 
     }
 
-    logout = (event) =>
-    {
-        window.localStorage.removeItem('token')
-
-    }
+    // logout = (event) =>
+    // {
+    //     window.localStorage.removeItem('token')
+    //
+    // }
 
     render() {
         const name= window.localStorage.getItem('name')
@@ -28,9 +28,9 @@ class MainNav extends Component {
                 <div style={{float:'right'}}>
                 <Nav>
                     <NavDropdown  title={name} id="basic-nav-dropdown">
-                        <MenuItem><Link to="/ccpass">change password</Link></MenuItem>
+                        <MenuItem>change password</MenuItem>
                     </NavDropdown>
-                    <NavItem className="nav-link" href={"/login"}>logout</NavItem>
+                    <NavItem className="nav-link"  href={"/login"}>logout</NavItem>
                 </Nav>
                 </div>
             </Navbar>
