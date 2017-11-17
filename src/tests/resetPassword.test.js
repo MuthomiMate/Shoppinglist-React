@@ -2,7 +2,6 @@ import React from 'react'
 import PassReset from '../resetPassword'
 import ReactDOM from 'react-dom'
 import Enzyme from 'enzyme'
-import {toast} from 'react-toastify'
 import Toaster from '../sucessToaster';
 import {shallow,mount} from 'enzyme'
 import moxios from 'moxios'
