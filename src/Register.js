@@ -3,38 +3,13 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Toaster from './sucessToaster'
+import {toast} from 'react-toastify'
 import axios from 'axios';
-import Login from './Login';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+
 class Register extends Component {
-    handleClick(event){
-        var apiBaseUrl = 'https://shopping-list-api-muthomi.herokuapp.com/';
-        console.log("values",this.state.first_name,this.state.last_name,this.state.email,this.state.password);
-        //To be done:check for empty values before hitting submit
-        var self = this;
-        var payload={
-            "email":this.state.email,
-            "password":this.state.password,
-            "name": `${this.state.first_name} ${this.state.last_name}`
-        }
-        axios.post(apiBaseUrl+'auth/register', payload)
-            .then(function (response) {
-                console.log(response);
-                    //  console.log("registration successfull");
-                var result = response.data.message;
-                if (result == 'You registered successfully. Please log in.'){
-                    this.props.history.push("/login");
 
-                }else {
-                    alert(result);
-                }
-
-
-            })
-            .catch(function (error) {
-                console.log(error);
-                alert(error.response.data.message)
-            });
-    }
     constructor(props){
         super(props);
         this.state={
@@ -43,42 +18,65 @@ class Register extends Component {
             email:'',
             password:''
         }
+        this.handleClick=this.handleClick.bind(this)
+    }
+    handleClick= (event)=>{
+        var apiBaseUrl = 'https://shopping-list-api-muthomi.herokuapp.com/';
+        var payload={
+            "email":this.state.email,
+            "password":this.state.password,
+            "name": `${this.state.first_name}${this.state.last_name}`
+        }
+        axios.post(apiBaseUrl+'auth/register', payload)
+            .then(function (response) {
+                toast.success(response.data.message)
+            })
+            .catch(function (error) {
+                toast.error(error.response.data.message)
+            });
     }
     render() {
         return (
             <div>
+                <Toaster/>
                 <MuiThemeProvider>
                     <div>
                         <AppBar
                             title="Register"
                         />
+                        <Card style = {{width: '40%', marginLeft: '30%', marginTop : '2%'}}>
+                            <div style={{textAlign: "center"}}>
+                                <CardHeader title = "Register"/>
+                                <CardText>
                         <TextField
                             hintText="Enter your First Name"
                             floatingLabelText="First Name"
-                            onChange = {(event,newValue) => this.setState({first_name:newValue})}
+                            onChange = {(event) => this.setState({first_name:event.target.value})}
                         />
                         <br/>
                         <TextField
                             hintText="Enter your Last Name"
                             floatingLabelText="Last Name"
-                            onChange = {(event,newValue) => this.setState({last_name:newValue})}
+                            onChange = {(event) => this.setState({last_name:event.target.value})}
                         />
                         <br/>
                         <TextField
                             hintText="Enter your Email"
                             type="email"
                             floatingLabelText="Email"
-                            onChange = {(event,newValue) => this.setState({email:newValue})}
+                            onChange = {(event) => this.setState({email:event.target.value})}
                         />
                         <br/>
                         <TextField
                             type = "password"
                             hintText="Enter your Password"
                             floatingLabelText="Password"
-                            onChange = {(event,newValue) => this.setState({password:newValue})}
+                            onChange = {(event) => this.setState({password:event.target.value})}
                         />
                         <br/>
                         <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+                                </CardText></div>
+                        </Card>
                     </div>
                 </MuiThemeProvider>
             </div>
