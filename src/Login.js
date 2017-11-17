@@ -32,12 +32,14 @@ class Login extends  Component{
                         <TextField
                         hintText="Enter Your Email"
                         type='email'
+                        id='email'
                         floatingLabelText="Email"
-                        onChange={(event, newValue) => this.setState({email: newValue})}/><br/>
+                        onChange={(event) => this.setState({email: event.target.value})}/><br/>
                         <TextField hintText="Enter your password"
                                    type='password'
+                                   id='password'
                         floatingLabelText="Password"
-                        onChange={(event, newValue) => this.setState({password:newValue})}/>
+                        onChange={(event) => this.setState({password:event.target.value})}/>
                         <br/>
                         <RaisedButton label="Submit" primary={true} style={{marginTop: "10px"}} onClick={this.handleClick}/>
                                 <div style={{marginTop: "10px"}}><p>Not Registered. Please <a href={'/'}>sign up</a> </p></div>

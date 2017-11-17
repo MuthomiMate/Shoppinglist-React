@@ -71,18 +71,6 @@ describe ('<PassReset/>', () =>{
                 done()
             })
         })
-            // moxios.wait(function () {
-            //     let request = moxios.requests.mostRecent()
-            //     request.respondWith({
-            //         status: 200,
-            //         response :{message:"The password has been sent to your email"}
-            //     })
-            //         .then(function () {
-            //            expects(toast.success(response.data.message).toEqual('The password has been sent to your email') );
-            //
-            //         })
-            //     done()
-            // })
 
         })
 
