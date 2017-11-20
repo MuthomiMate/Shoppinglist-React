@@ -39,7 +39,7 @@ class Register extends Component {
     }
     render() {
         return (
-            <div>
+            <div style={{backgroundColor:"black"}}>
                 <Toaster/>
                 <MuiThemeProvider>
                     <div>

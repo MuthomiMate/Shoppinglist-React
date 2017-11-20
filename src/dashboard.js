@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import MainNav from "./navbar"
 import axios from "axios"
 import * as ReactBootstrap from 'react-bootstrap';
+import Toaster from './sucessToaster'
+import {toast} from 'react-toastify'
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
 const token = "Bearer "+window.localStorage.getItem('token');
@@ -18,7 +20,8 @@ class Dashboard extends Component{
             search: '',
             showComponent: false,
             next: "",
-            prev: ""
+            prev: "",
+            addshoppinglist: ""
         };
         this.handleClick = this.handleClick.bind(this);
         this.searchShoppinglist = this.searchShoppinglist.bind(this)
@@ -32,7 +35,7 @@ class Dashboard extends Component{
     }
 
 
-    getshoppinglists (){
+    getshoppinglists = ()=>{
         axios({
             url: `${apiBaseUrl}shoppinglists/`,
             method: 'get',
@@ -70,7 +73,12 @@ class Dashboard extends Component{
 
             })
             .catch((error) => {
-                console.log(error.response)
+                console.log(error)
+                toast.error(error.response.data.message)
+                // setTimeout(function(){
+                //     this.props.history.push("/login")
+                // },5000);
+
             });
     }
     getshoppinglistnext (){
@@ -174,12 +182,11 @@ class Dashboard extends Component{
         })
             .then((response) => {
                 console.log(response.data)
-
-
-
+                this.state.shoppinglists.push(response.data)
+                toast.success("Shopping list has been added successfully")
             })
             .catch((error) => {
-                console.log((error.response))
+                toast.error(error.response.data.message)
             })
     }
     editshoppinglist = (event, id) => {
@@ -197,10 +204,10 @@ class Dashboard extends Component{
             },
         })
             .then((response)=>{
-                console.log(response.data)
+                toast.success(response.data.message)
             })
             .catch((error) =>{
-                console.log(error.response)
+                toast.error(error.response.message)
             })
     }
     deleteshoppinglist = (event,id) => {
@@ -213,10 +220,10 @@ class Dashboard extends Component{
             },
         })
             .then((response) =>{
-                console.log(response.data)
+                toast.success(response.data.message)
             })
             .catch((error) =>{
-                console.log(error.data)
+                toast.error(error.response.data.message)
             })
 
     };
@@ -259,6 +266,7 @@ class Dashboard extends Component{
             let x = 0;
             return (
                 <div>
+                    <Toaster/>
                     <MainNav/>
                     {/*{this.state.showComponent ?*/}
                     {/*<ShoppingItems id={this.state.id} showComponent={ this.state.showComponent }/>: ""}*/}

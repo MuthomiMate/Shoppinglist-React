@@ -20,7 +20,8 @@
     "react-scripts": "1.0.14",
     "react-tap-event-plugin": "^3.0.2",
     "react-toastify": "^2.2.0",
-    "react-tooltip": "^3.4.0"
+    "react-tooltip": "^3.4.0",
+    "sinon": "^4.1.2"
   },
   "scripts": {
     "start": "react-scripts start",

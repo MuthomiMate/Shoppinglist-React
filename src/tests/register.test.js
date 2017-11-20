@@ -17,9 +17,6 @@ describe('<Register/>', () =>{
     it('changes first name state', () => {
         const wrapper = mount(<Register/>);
         const fname = wrapper.find('input#fname');
-        const lname = wrapper.find('input#lname');
-        const email = wrapper.find('input#email');
-        const password = wrapper.find('input#password');
         const target = {
             value: 'muthomi'
         };
