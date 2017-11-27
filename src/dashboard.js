@@ -4,6 +4,7 @@ import axios from "axios"
 import * as ReactBootstrap from 'react-bootstrap';
 import Toaster from './sucessToaster'
 import {toast} from 'react-toastify'
+import ShoppingList from './shoppinglist'
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
 const token = "Bearer "+window.localStorage.getItem('token');
@@ -263,7 +264,7 @@ class Dashboard extends Component{
     render () {
 
             const shoppinglists = this.state.shoppinglists;
-            let x = 0;
+            let x =0;
             return (
                 <div>
                     <Toaster/>
@@ -300,31 +301,11 @@ class Dashboard extends Component{
                                 <tbody>
                                 {
                                     shoppinglists.map((shoppinglists) => (
-                                        <tr className="buckets" key={shoppinglists.id}>
-                                            <td><i>{++x}</i></td>
-
-                                            <td>{shoppinglists.name} </td>
-                                            <td>
-                                                <div className="button btn-primary glyphicon glyphicon-eye-open"
-                                                     data-toggle="modal" data-target="#items"
-                                                     onClick={(e) => this.handleClick(shoppinglists.id, e)}></div>
-                                            </td>
-                                            <td>
-                                                <div className="button btn-success glyphicon glyphicon-pencil"
-                                                     data-toggle="modal" data-target="#edits"
-                                                     onClick={(event => this.setState({id: shoppinglists.id}))}></div>
-                                            </td>
-                                            <td>
-                                                <div className="button btn-danger glyphicon glyphicon-trash"
-                                                     data-toggle="modal" data-target="#deletes"
-                                                     onClick={(event => this.setState({id: shoppinglists.id}))}></div>
-                                            </td>
-                                        </tr>
+                                        <ShoppingList id={shoppinglists.id} name={shoppinglists.name} number={++x}/>
                                     ))
                                 }
                                 </tbody>
                             </ReactBootstrap.Table>
-
                         <div style={{float: "right"} }>
                             {this.state.prev ?<div className="button btn-primary" onClick={this.getshoppinglistprev }>Prev</div>: ""}
                             {this.state.next ?<div className="button btn-primary" onClick={this.getshoppinglistnext } >Next</div>: ""}
