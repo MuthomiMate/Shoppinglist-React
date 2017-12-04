@@ -23,3 +23,9 @@ export const PromError =(error,dashboard) => {
      }
      console.log(error.config)
  }
+
+export const BaseUrl = () => {
+    const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
+    return apiBaseUrl
+}
+
