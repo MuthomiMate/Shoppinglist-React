@@ -18,6 +18,7 @@ class ShoppingItems extends Component {
             next: "",
             prev: "",
             search: "",
+            page: "",
             items: []
 
         }
@@ -217,11 +218,14 @@ class ShoppingItems extends Component {
                     {this.state.msg ? <div className="Alert alert-danger" style={{marginTop:"20px"}}>{this.state.msg} </div>:
                         <div>
                         <div style={{marginTop: '10px', width: '100%'}}>
-                            <div className="form form-group" style={{display: "inline-block", width: '40%', marginLeft: '20%' }}>
+                            <div className="form form-group" style={{display: "inline-block", width: '30%' }}>
                                 <input className="form-control" type="text" placeholder="Search items" onChange={(event) => this.setState({search: event.target.value})}/>
                             </div>
+                            <div className="form form-group" style={{display: "inline-block", width: '30%', paddingLeft: '10%'}}>
+                                <input className="form-control" type="number" min="1" max="20" placeholder="Items per Page" onChange={(event) => this.setState({page: event.target.value})}/>
+                            </div>
                             <div style={{ display: 'inline-block', width: '20%', paddingLeft: '10%'}}>
-                                <ReactBootstrap.Button bsStyle="primary" onClick={this.searchitem}>Search</ReactBootstrap.Button>
+                                <ReactBootstrap.Button bsStyle="primary" onClick={this.searchitem}>Go</ReactBootstrap.Button>
                             </div>
                         </div>
                     <ReactBootstrap.Table responsive bordered className="sTable" style={{marginTop: '20px'}}>
