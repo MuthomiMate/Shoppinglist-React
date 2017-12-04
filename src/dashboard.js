@@ -299,15 +299,15 @@ class Dashboard extends Component{
                                 <tbody>
                                 {
                                     shoppinglists.map((shoppinglists) => (
-                                        <ShoppingList id={shoppinglists.id} name={shoppinglists.name} number={++x}/>
+                                        <ShoppingList id={shoppinglists.id} name={shoppinglists.name} number={++x} handleClick = {this.handleClick} parent={this}/>
                                     ))
                                 }
                                 </tbody>
                             </ReactBootstrap.Table>
-                        <div style={{float: "right"} }>
-                            {this.state.prev ?<div className="button btn-primary" onClick={this.getshoppinglistprev }>Prev</div>: ""}
-                            {this.state.next ?<div className="button btn-primary" onClick={this.getshoppinglistnext } >Next</div>: ""}
-                        </div>
+                                <div style={{float:'right'}} >
+                                    {this.state.next?<div style={{padding: '5px', display: 'inline-block'}} onClick={this.getshoppinglistnext}><ReactBootstrap.Button bsStyle="primary" >Next</ReactBootstrap.Button></div>: ""}
+                                    {this.state.prev?<div style={{display: 'inline-block'}} onClick={this.getshoppinglistprev}><ReactBootstrap.Button bsStyle="primary" >prev</ReactBootstrap.Button></div>:""}
+                                </div>
                         </div>: ""}
                     </div>
                         </div>
