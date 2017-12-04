@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import {toast} from 'react-toastify'
 import Toaster from './sucessToaster'
 import LoadingSpinner from './spinner'
+import NavLogin from './navlogin'
 
 class Login extends  Component{
     constructor(props){
@@ -27,7 +28,7 @@ class Login extends  Component{
                     <div>
 
                         <Toaster/>
-                        {/*<AppBar title="Login" style={{backgroundColor: '#2196F3'}}/>*/}
+                        <NavLogin/>
 
                             <Card style={{width: '40%', marginLeft: '30%', marginTop: '2%'}}>
                                 <div style={{textAlign: "center"}}>
@@ -52,7 +53,7 @@ class Login extends  Component{
                                                               onClick={this.handleClick}/>
                                                 <div style={{marginTop: "10px"}}><p>Not Registered. Please <a href={'/'}>sign
                                                     up</a></p></div>
-                                                <div style={{marginTop: "10px"}}><p><a href={'/'}>forgot password?</a></p></div>
+                                                <div style={{marginTop: "10px"}}><p><a href={'/passreset'}>forgot password?</a></p></div>
                                             </div>
                                         </CardText>
 
@@ -90,6 +91,7 @@ class Login extends  Component{
 
             })
             .catch((error) => {
+            console.log(error)
                 this.setState({spinnershow:false})
                 toast.error(error.response.data.message)
             })
