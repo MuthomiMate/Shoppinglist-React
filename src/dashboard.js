@@ -37,11 +37,12 @@ class Dashboard extends Component{
 
 
     getshoppinglists = ()=>{
+        IsLoggedIn(this)
         axios({
-            url: `${apiBaseUrl}shoppinglists/`,
+            url: `${BaseUrl()}shoppinglists/`,
             method: 'get',
             headers: {
-                Authorization: token,
+                Authorization: getToken(),
                 content_type: 'application/json',
             },
 
@@ -64,18 +65,14 @@ class Dashboard extends Component{
 
             })
             .catch((error) => {
-                console.log(error)
-                toast.error(error.response.data.message)
-                // setTimeout(function(){
-                //     this.props.history.push("/login")
-                // },5000);
+                PromError(error, this)
 
             });
     }
     getshoppinglistnext (){
 
         axios({
-            url: `${apiBaseUrl}shoppinglists/${this.state.next}`,
+            url: `${BaseUrl()}shoppinglists/${this.state.next}`,
             method: 'get',
             headers: {
                 Authorization: token,
@@ -101,13 +98,13 @@ class Dashboard extends Component{
 
             })
             .catch((error) => {
-                console.log(error.response)
+                PromError(error, this)
             });
     }
     getshoppinglistprev (){
         console.log(this.state.prev)
         axios({
-            url: `${apiBaseUrl}shoppinglists/${this.state.prev}`,
+            url: `${BaseUrl()}shoppinglists/${this.state.prev}`,
             method: 'get',
             headers: {
                 Authorization: token,
@@ -144,7 +141,7 @@ class Dashboard extends Component{
         };
         axios({
 
-            url: `${apiBaseUrl}shoppinglists/`,
+            url: `${BaseUrl()}shoppinglists/`,
             method: 'post',
             data: payload,
             headers: {
@@ -159,6 +156,7 @@ class Dashboard extends Component{
             })
             .catch((error) => {
                 toast.error(error.response.data.message)
+                PromError(error, this)
             })
     }
     editshoppinglist = (event, id) => {
@@ -168,6 +166,7 @@ class Dashboard extends Component{
         console.log(payload)
         axios({
             url: `${apiBaseUrl}shoppinglists/`+this.state.id,
+            url: `${BaseUrl()}shoppinglists/`+this.state.id,
             method: 'PUT',
             data: payload,
             headers: {
@@ -180,11 +179,13 @@ class Dashboard extends Component{
             })
             .catch((error) =>{
                 toast.error(error.response.message)
+                PromError(error, this)
             })
     }
     deleteshoppinglist = (event,id) => {
         axios({
             url: `${apiBaseUrl}shoppinglists/`+this.state.id,
+            url: `${BaseUrl()}shoppinglists/`+this.state.id,
             method: 'DELETE',
             headers: {
                 Authorization: token,
@@ -196,6 +197,7 @@ class Dashboard extends Component{
             })
             .catch((error) =>{
                 toast.error(error.response.data.message)
+               PromError(error, this)
             })
 
     };
@@ -220,6 +222,7 @@ class Dashboard extends Component{
             })
             .catch((error) => {
                 console.log(error.data)
+                PromError(error,this)
             })
     }
     handleClick(id, e){
