@@ -29,3 +29,15 @@ export const BaseUrl = () => {
     return apiBaseUrl
 }
 
+export const PrevAndNextStates = (response, dashboard) => {
+    if (response.data.previous_page !== "None"){
+        dashboard.setState({prev:response.data.previous_page});
+    }
+    else{
+        dashboard.setState({prev:''});
+    }
+    if (response.data.next_page !== "None"){
+        dashboard.setState({next:response.data.next_page});
+    }else{
+        dashboard.setState({next:''});
+    }
