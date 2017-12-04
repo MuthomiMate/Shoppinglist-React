@@ -31,9 +31,8 @@ class ShoppingItems extends Component {
         this.getItems()
     }
     getItems = () =>{
-        console.log(this.props.id);
         axios({
-            url: `${apiBaseUrl}${this.props.match.params.id}/items/`,
+            url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/`,
             method: `GET`,
             headers: {
                 Authorization: token,
@@ -76,14 +75,14 @@ class ShoppingItems extends Component {
                 this.setState({items: response.data.shopping_lists})
             })
             .catch((error) => {
-                console.log(error.data);
+                PromError(error, this)
             })
 
     };
     getItemsprev = () =>{
         console.log(this.props.id);
         axios({
-            url: `${apiBaseUrl}${this.props.match.params.id}/items/${this.state.prev}`,
+            url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/${this.state.prev}`,
             method: `GET`,
             headers: {
                 Authorization: token,
@@ -100,13 +99,27 @@ class ShoppingItems extends Component {
                 this.setState({items: response.data.shopping_lists})
             })
             .catch((error) => {
-                console.log(error.data);
+                PromError(error, this)
             })
 
     };
-    searchitem =(event) => {
+    searchitem =() => {
+        let urllink="";
+        if(this.state.page=== "" && this.state.search===""){
+            urllink = `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/`
+        }
+        if(this.state.page!=="" && this.state.search !== "" ){
+            urllink =`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?q=${this.state.search}&limit=${this.state.page}`
+        }
+        if(this.state.search!=="" && this.state.page===""){
+            urllink =`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?q=${this.state.search}`
+        }
+        if(this.state.search==="" && this.state.page!==""){
+            urllink=`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?limit=${this.state.page}`
+        }
+        console.log(urllink)
         axios({
-            url: `${apiBaseUrl}${this.props.match.params.id}/items/?q=${this.state.search}`,
+            url: urllink,
             method: 'GET',
             headers : {
                 Authorization: token,
@@ -125,7 +138,7 @@ class ShoppingItems extends Component {
                 }
             })
             .catch((error) => {
-                console.log(error.data)
+                PromError(error, this)
             })
     }
     addItem = (event) =>{
@@ -134,6 +147,7 @@ class ShoppingItems extends Component {
         };
         axios({
             url: `${apiBaseUrl}${this.props.match.params.id}/items/`,
+            url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/`,
             method : 'post',
             data: payload,
             headers : {
@@ -145,7 +159,7 @@ class ShoppingItems extends Component {
 
             })
             .catch((error) =>{
-                console.log(error.data)
+                PromError(error, this)
             })
     }
     editItem = (event) => {
@@ -171,7 +185,7 @@ class ShoppingItems extends Component {
     }
     deleteItem = (event) => {
         axios({
-            url: `${apiBaseUrl}items/${this.state.id}`,
+            url: `${BaseUrl()}shoppinglists/items/${this.state.id}`,
             method: 'DELETE',
             headers: {
                 Authorization: token,
@@ -182,7 +196,7 @@ class ShoppingItems extends Component {
                 console.log(response.data)
             })
             .catch((error) => {
-                console.log(error.data)
+                PromError(error, this)
             })
 
     }
