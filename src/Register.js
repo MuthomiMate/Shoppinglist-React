@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Toaster from './sucessToaster'
 import {toast} from 'react-toastify'
 import axios from 'axios';
+import NavLogin from './navlogin'
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 class Register extends Component {
@@ -31,7 +31,7 @@ class Register extends Component {
         axios.post(apiBaseUrl+'auth/register', payload)
             .then(function (response) {
                 toast.success(response.data.message)
-                 // this.props.history.push("/login")
+                 this.props.history.push("/login")
             })
             .catch(function (error) {
                 toast.error(error.response.data.message)
@@ -39,13 +39,11 @@ class Register extends Component {
     }
     render() {
         return (
-            <div style={{backgroundColor:"black"}}>
+            <div>
                 <Toaster/>
                 <MuiThemeProvider>
                     <div>
-                        <AppBar
-                            title="Register"
-                        />
+                        <NavLogin/>
                         <Card style = {{width: '40%', marginLeft: '30%', marginTop : '2%'}}>
                             <div style={{textAlign: "center"}}>
                                 <CardHeader title = "Register"/>
