@@ -21,6 +21,7 @@ class Dashboard extends Component{
             search: '',
             showComponent: false,
             next: "",
+            page: "",
             prev: "",
             addshoppinglist: ""
         };
@@ -201,9 +202,23 @@ class Dashboard extends Component{
             })
 
     };
-    searchShoppinglist =(event) => {
+    searchShoppinglist =() => {
+        let urllink="";
+        if(this.state.page=== "" && this.state.search===""){
+            urllink = `${BaseUrl()}shoppinglists/`
+        }
+        if(this.state.page!=="" && this.state.search !== "" ){
+            urllink =`${BaseUrl()}shoppinglists/?q=${this.state.search}&limit=${this.state.page}`
+        }
+        if(this.state.search!=="" && this.state.page===""){
+            urllink =`${BaseUrl()}shoppinglists/?q=${this.state.search}`
+        }
+        if(this.state.search==="" && this.state.page!==""){
+            urllink=`${BaseUrl()}shoppinglists/?limit=${this.state.page}`
+        }
+        console.log(urllink)
         axios({
-            url: `${apiBaseUrl}shoppinglists/?q=${this.state.search}`,
+            url: urllink,
             method: 'GET',
             headers : {
                 Authorization: token,
@@ -255,8 +270,11 @@ class Dashboard extends Component{
                             {this.state.shoppinglists?
                                 <div>
                                     <div style={{marginTop: '10px', width: '100%'}}>
-                                        <div className="form form-group" style={{display: "inline-block", width: '40%', marginLeft: '20%' }}>
+                                        <div className="form form-group" style={{display: "inline-block", width: '30%'}}>
                                             <input className="form-control" type="text" placeholder="Search shoppingList" onChange={(event) => this.setState({search: event.target.value})}/>
+                                        </div>
+                                        <div className="form form-group" style={{display: "inline-block", width: '30%', paddingLeft: '10%'}}>
+                                            <input className="form-control" type="number" min="1" max="20" placeholder="Lists per Page" onChange={(event) => this.setState({page: event.target.value})}/>
                                         </div>
                                         <div style={{ display: 'inline-block', width: '20%', paddingLeft: '10%'}}>
                                         <ReactBootstrap.Button bsStyle="primary" onClick={this.searchShoppinglist}>Search</ReactBootstrap.Button>
