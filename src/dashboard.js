@@ -132,7 +132,7 @@ class Dashboard extends Component{
 
             })
             .catch((error) => {
-                toast
+                PromError(error, this)
             });
     }
     addshoppinglist = (event) => {
@@ -151,22 +151,21 @@ class Dashboard extends Component{
             },
         })
             .then((response) => {
-                console.log(response.data)
-                this.state.shoppinglists.push(response.data)
                 toast.success("Shopping list has been added successfully")
+                var newStateArray = this.state.shoppinglists.slice();
+                newStateArray.push(response.data);
+                this.setState({shoppinglists: newStateArray});
             })
             .catch((error) => {
-                toast.error(error.response.data.message)
                 PromError(error, this)
             })
     }
-    editshoppinglist = (event, id) => {
+    editshoppinglist = () => {
         let payload = {
             "name": this.state.name
         }
         console.log(payload)
         axios({
-            url: `${apiBaseUrl}shoppinglists/`+this.state.id,
             url: `${BaseUrl()}shoppinglists/`+this.state.id,
             method: 'PUT',
             data: payload,
@@ -176,16 +175,22 @@ class Dashboard extends Component{
             },
         })
             .then((response)=>{
-                toast.success(response.data.message)
+                console.log(response.data)
+                toast.success(response.data.message.message)
+                this.setState({shoppinglists:this.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.state.id )})
+                var newStateArray = this.state.shoppinglists.slice();
+                newStateArray.push(response.data.shoppinglist);
+                this.setState({shoppinglists: newStateArray});
+
+
+
             })
             .catch((error) =>{
-                toast.error(error.response.message)
                 PromError(error, this)
             })
     }
-    deleteshoppinglist = (event,id) => {
+    deleteshoppinglist = () => {
         axios({
-            url: `${apiBaseUrl}shoppinglists/`+this.state.id,
             url: `${BaseUrl()}shoppinglists/`+this.state.id,
             method: 'DELETE',
             headers: {
@@ -195,9 +200,10 @@ class Dashboard extends Component{
         })
             .then((response) =>{
                 toast.success(response.data.message)
+                this.setState({shoppinglists:this.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.state.id )})
             })
             .catch((error) =>{
-                toast.error(error.response.data.message)
+
                PromError(error, this)
             })
 
@@ -232,20 +238,20 @@ class Dashboard extends Component{
 
                 }
                 else {
-                    this.setState({shoppinglists: response.data})
+                    this.setState({shoppinglists: response.data.shopping_lists})
                 }
             })
             .catch((error) => {
-                console.log(error.data)
                 PromError(error,this)
             })
     }
-    handleClick(id, e){
+    handleClick=(id)=>{
         console.log(id)
         this.setState({ id: id});
         this.props.history.push( `${id}/items`);
         console.log(this.state.id)
     }
+
 
 
 
