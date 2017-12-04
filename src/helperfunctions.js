@@ -41,3 +41,17 @@ export const PrevAndNextStates = (response, dashboard) => {
     }else{
         dashboard.setState({next:''});
     }
+
+}
+export const IsLoggedIn =(dashboard)=> {
+    if (window.localStorage.getItem("token")===null){
+        dashboard.props.history.push("/login")
+        console.log(window.localStorage.getItem("token"))
+    }
+
+
+}
+
+export const getToken = () =>{
+    return "Bearer "+window.localStorage.getItem('token')
+}
