@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import Dashboard from './dashboard'
 
 
 class ShoppingList extends Component{
@@ -20,17 +19,17 @@ class ShoppingList extends Component{
                     <td>
                         <div className="button btn-primary glyphicon glyphicon-eye-open"
                              data-toggle="modal" data-target="#items"
-                             onClick={(e) => this.handleClick(this.props.id, e)}></div>
+                             onClick={(e) => this.props.handleClick(this.props.id)}></div>
                     </td>
                     <td>
                         <div className="button btn-success glyphicon glyphicon-pencil"
                              data-toggle="modal" data-target="#edits"
-                             onClick={(event => this.setState({id: this.props.id}))}></div>
+                             onClick={(event => this.props.parent.setState({id: this.props.id}))}></div>
                     </td>
                     <td>
                         <div className="button btn-danger glyphicon glyphicon-trash"
                              data-toggle="modal" data-target="#deletes"
-                             onClick={(event => this.setState({id: this.props.id}))}></div>
+                             onClick={(event => this.props.parent.setState({id: this.props.id}))}></div>
                     </td>
                 </tr>
 
