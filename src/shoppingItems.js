@@ -4,6 +4,7 @@ import * as ReactBootstrap from 'react-bootstrap';
 import MainNav from "./navbar"
 
 const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/';
+import {BaseUrl, PrevAndNextStates} from "./helperfunctions";
 
 const token = "Bearer "+window.localStorage.getItem('token');
 class ShoppingItems extends Component {
@@ -45,28 +46,19 @@ class ShoppingItems extends Component {
                 console.log(response.data);
                 if(response.data!=[]){
                     this.setState({msg: response.data.message })
-                }if (response.data.previous_page !== "None"){
-                    this.setState({prev:response.data.previous_page});
                 }
-                else{
-                    this.setState({prev:''});
-                }
-                if (response.data.next_page !== "None"){
-                    this.setState({next:response.data.next_page});
-                }else{
-                    this.setState({next:''});
-                }
+                PrevAndNextStates(response, this)
                 this.setState({items: response.data.shopping_lists})
             })
             .catch((error) => {
-                console.log(error.data);
+                PromError(error, this)
             })
 
     };
     getItemsnext = () =>{
         console.log(this.props.id);
         axios({
-            url: `${apiBaseUrl}${this.props.match.params.id}/items/${this.state.next}`,
+            url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/${this.state.next}`,
             method: `GET`,
             headers: {
                 Authorization: token,
@@ -79,17 +71,8 @@ class ShoppingItems extends Component {
                 console.log(response.data);
                 if(response.data!=[]){
                     this.setState({msg: response.data.message })
-                }if (response.data.previous_page !== "None"){
-                    this.setState({prev:response.data.previous_page});
                 }
-                else{
-                    this.setState({prev:''});
-                }
-                if (response.data.next_page !== "None"){
-                    this.setState({next:response.data.next_page});
-                }else{
-                    this.setState({next:''});
-                }
+                PrevAndNextStates(response, this)
                 this.setState({items: response.data.shopping_lists})
             })
             .catch((error) => {
@@ -113,17 +96,7 @@ class ShoppingItems extends Component {
                 console.log(response.data);
                 if(response.data!=[]){
                     this.setState({msg: response.data.message })
-                }if (response.data.previous_page !== "None"){
-                    this.setState({prev:response.data.previous_page});
-                }
-                else{
-                    this.setState({prev:''});
-                }
-                if (response.data.next_page !== "None"){
-                    this.setState({next:response.data.next_page});
-                }else{
-                    this.setState({next:''});
-                }
+                }PrevAndNextStates(response, this)
                 this.setState({items: response.data.shopping_lists})
             })
             .catch((error) => {
@@ -148,6 +121,7 @@ class ShoppingItems extends Component {
                 }
                 else {
                     this.setState({items: response.data})
+                    PrevAndNextStates(response, this)
                 }
             })
             .catch((error) => {
