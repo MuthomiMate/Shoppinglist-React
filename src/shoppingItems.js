@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import axios from 'axios'
 import * as ReactBootstrap from 'react-bootstrap';
 import MainNav from "./navbar"
-
-const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/';
+import Toaster from './sucessToaster'
+import {toast} from 'react-toastify'
+import {} from './helperfunctions'
+import {PromError} from "./helperfunctions";
 import {BaseUrl, PrevAndNextStates} from "./helperfunctions";
 
 const token = "Bearer "+window.localStorage.getItem('token');
@@ -128,26 +130,25 @@ class ShoppingItems extends Component {
             },
         })
             .then((response) => {
-                console.log(response.data)
+                console.log(response)
                 if(response.data.message==="Shopping list name does not exist") {
                     this.setState({msg: response.data.message})
 
                 }
                 else {
-                    this.setState({items: response.data})
                     PrevAndNextStates(response, this)
+                    this.setState({items: response.data.shopping_lists})
                 }
             })
             .catch((error) => {
                 PromError(error, this)
             })
     }
-    addItem = (event) =>{
+    addItem = () =>{
         let payload = {
             'name': this.state.name
         };
         axios({
-            url: `${apiBaseUrl}${this.props.match.params.id}/items/`,
             url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/`,
             method : 'post',
             data: payload,
@@ -157,18 +158,21 @@ class ShoppingItems extends Component {
             }
         })
             .then((response) =>{
-
+                toast.success("Item has been added successfully")
+                var newStateArray = this.state.items.slice();
+                newStateArray.push(response.data);
+                this.setState({items: newStateArray});
             })
             .catch((error) =>{
                 PromError(error, this)
             })
     }
-    editItem = (event) => {
+    editItem = () => {
         let payload = {
             "name": this.state.name
         }
         axios({
-            url: `${apiBaseUrl}items/${this.state.id}`,
+            url: `${BaseUrl()}shoppinglists/items/${this.state.id}`,
             method: 'PUT',
             data: payload,
             headers: {
@@ -178,13 +182,18 @@ class ShoppingItems extends Component {
         })
             .then((response) => {
                 console.log(response.data)
+                toast.success("Item has been edited successfully")
+                this.setState({items:this.state.items.filter(items => items.id !== this.state.id )})
+                var newStateArray = this.state.items.slice();
+                newStateArray.push(response.data);
+                this.setState({items: newStateArray});
             })
             .catch((error) => {
-                console.log(error.data)
+                PromError(error, this)
             })
 
     }
-    deleteItem = (event) => {
+    deleteItem = () => {
         axios({
             url: `${BaseUrl()}shoppinglists/items/${this.state.id}`,
             method: 'DELETE',
@@ -195,6 +204,8 @@ class ShoppingItems extends Component {
         })
             .then((response) => {
                 console.log(response.data)
+                toast.success(response.data.message)
+                this.setState({items:this.state.items.filter(items => items.id !== this.state.id )})
             })
             .catch((error) => {
                 PromError(error, this)
@@ -208,7 +219,7 @@ class ShoppingItems extends Component {
         return(
                 <div>
                     <MainNav/>
-
+                    <Toaster/>
             <div className=" col-lg-offset-2 col-md-8 ">
                 <div className="panel panel-success">
                     <div className="panel-heading">shopping Items</div>
