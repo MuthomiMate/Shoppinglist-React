@@ -9,6 +9,7 @@ import Login from "./Login";
 import Dashboard from "./dashboard"
 import ChangePassword from "./changePassword"
 import PassReset from "./resetPassword"
+import ErrorPage from "./errorpage"
 
 ReactDOM.render(
 <Router>
@@ -18,7 +19,8 @@ ReactDOM.render(
         <Route exact path="/dashboard" component={Dashboard}/>
         <Route exact path="/ccpass" component={ChangePassword}/>
         <Route exact path="/passreset" component={PassReset}/>
-        <Route  path= {"/:id/items"} component={ShoppingItems}/>
+        <Route  exact path= {"/:id/items"} component={ShoppingItems}/>
+        <Route exact path={"*"} component={ErrorPage}/>
     </Switch>
 </Router>, document.getElementById('root'),
 );
