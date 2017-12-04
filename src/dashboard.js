@@ -5,9 +5,9 @@ import * as ReactBootstrap from 'react-bootstrap';
 import Toaster from './sucessToaster'
 import {toast} from 'react-toastify'
 import ShoppingList from './shoppinglist'
-
-const  apiBaseUrl  = 'https://shopping-list-api-muthomi.herokuapp.com/';
+import {BaseUrl,PrevAndNextStates, PromError, IsLoggedIn, getToken} from "./helperfunctions";
 const token = "Bearer "+window.localStorage.getItem('token');
+
 class Dashboard extends Component{
     constructor(props){
 
@@ -54,18 +54,8 @@ class Dashboard extends Component{
                     });
 
                 }
-                if (response.data.previous_page !== "None"){
-                    this.setState({prev:response.data.previous_page});
-                }
-                else{
-                    this.setState({prev:''});
-                }
-                if (response.data.next_page !== "None"){
-                    this.setState({next:response.data.next_page});
-                }else{
-                    this.setState({next:''});
-                }
-
+                PrevAndNextStates(response, this)
+                console.log(response.data.shopping_lists)
                 this.setState({
                     shoppinglists:response.data.shopping_lists
 
@@ -101,16 +91,7 @@ class Dashboard extends Component{
                     });
 
                 }
-                if (response.data.previous_page !== "None"){
-                    this.setState({prev:response.data.previous_page});
-                }else {
-                    this.setState({prev:''});
-                }
-                if (response.data.next_page !== "None"){
-                    this.setState({next:response.data.next_page});
-                }else {
-                    this.setState({next:''});
-                }
+                PrevAndNextStates(response, this);
 
                 this.setState({
                     shoppinglists:response.data.shopping_lists
@@ -142,17 +123,7 @@ class Dashboard extends Component{
                     });
 
                 }
-                if (response.data.previous_page !== "None"){
-                    this.setState({prev:response.data.previous_page});
-                }else {
-                    this.setState({prev:''});
-                }
-                if (response.data.next_page !== "None"){
-                    this.setState({next:response.data.next_page});
-                }else {
-                    this.setState({next:''});
-                }
-                console.log(this.state.prev)
+                PrevAndNextStates(response, this);
 
 
                 this.setState({
