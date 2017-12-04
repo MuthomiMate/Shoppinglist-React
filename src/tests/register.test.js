@@ -86,7 +86,7 @@ describe('<Register/>', () =>{
                 console.log(wrapper.find('Toaster').html());
                 expect(wrapper.find('Toaster').html()).toContain("You registered successfully. Please log in.");
                 done()
-            })
+            }) 
         })
         it('refuses incorrect registration', function (done) {
             moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/register', {

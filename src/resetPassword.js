@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {toast} from 'react-toastify'
 import axios from 'axios'
 import Toaster from './sucessToaster'
-import MainNav from "./navbar";
+import NavLogin from './navlogin'
 const apiBaseUrl=`https://shopping-list-api-muthomi.herokuapp.com/auth/passreset`
 class PassReset extends Component {
     constructor(props){
@@ -35,7 +35,7 @@ class PassReset extends Component {
     render (){
         return(
             <div>
-                {/*<MainNav/>*/}
+                <NavLogin/>
                 <Toaster/>
                 <div className=" col-lg-offset-4 col-md-4 ">
                     <div className="panel panel-success">
