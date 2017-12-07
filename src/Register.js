@@ -5,6 +5,7 @@ import TextField from 'material-ui/TextField';
 import Toaster from './sucessToaster'
 import {toast} from 'react-toastify'
 import axios from 'axios';
+import LoadingSpinner from './spinner'
 import NavLogin from './navlogin'
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 
@@ -12,16 +13,18 @@ class Register extends Component {
 
     constructor(props){
         super(props);
-        this.state={
+        this.state = {
             first_name:'',
             last_name:'',
             email:'',
-            password:''
+            password:'',
+            spinnershow: false
         }
-        this.handleClick=this.handleClick.bind(this)
     }
-    handleClick= (event)=>{
+    handleClick = (event) => {
+        //method that sends user request to api if user click on register button
         event.preventDefault();
+        this.setState({spinnershow:true})
         var apiBaseUrl = 'https://shopping-list-api-muthomi.herokuapp.com/';
         var payload={
             "email":this.state.email,
@@ -29,11 +32,19 @@ class Register extends Component {
             "name": `${this.state.first_name}${this.state.last_name}`
         }
         axios.post(apiBaseUrl+'auth/register', payload)
-            .then(function (response) {
-                toast.success(response.data.message)
-                 this.props.history.push("/login")
+            .then((response)=> {
+                    console.log(response.data)
+                    this.setState({spinnershow:false})
+                //display successful registration on a toaster
+                    toast.success(response.data.message)
+                //redirect to login page if user registers successfully
+                    this.props.history.push("/login")
             })
-            .catch(function (error) {
+            .catch((error)=> {
+                //set the state of spinner to false so as not to show
+                this.setState({spinnershow:false})
+                console.log(error.response)
+                //display the error to the user
                 toast.error(error.response.data.message)
             });
     }
@@ -48,6 +59,8 @@ class Register extends Component {
                             <div style={{textAlign: "center"}}>
                                 <CardHeader title = "Register"/>
                                 <CardText>
+                                    {/*call method handleclick on onsubmit*/}
+                        <form onSubmit={this.handleClick}>
                         <TextField
                             hintText="Enter your First Name"
                             floatingLabelText="First Name"
@@ -77,8 +90,10 @@ class Register extends Component {
                             floatingLabelText="Password"
                             onChange = {(event) => this.setState({password:event.target.value})}
                         />
-                        <br/>
-                        <RaisedButton label="Submit" primary={true} id="submit" style={style} onClick={(event) => this.handleClick(event)}/>
+                        <br/>{this.state.spinnershow ?
+                            <center><LoadingSpinner/></center> :
+                        <RaisedButton type="submit" label="Submit"  primary={true} id="submit" style={style} />}
+                        </form>
                                 </CardText></div>
                         </Card>
                     </div>
