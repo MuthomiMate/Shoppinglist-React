@@ -3,17 +3,20 @@ import MainNav from "./navbar";
 import axios from 'axios'
 import Toaster from './sucessToaster'
 import {toast} from 'react-toastify'
+import LoadingSpinner from './spinner'
  const  apiBaseUrl=`https://shopping-list-api-muthomi.herokuapp.com/auth/ccpas`
 class ChangePassword extends Component {
     constructor(props) {
         super(props)
         this.state = {
             password: '',
-            newPassword: ''
+            newPassword: '',
+            showspinner: false
         }
         this.changePass = this.changePass.bind(this)
     }
     changePass = (event) =>{
+        this.setState({showspinner:true})
         event.preventDefault();
         let payload= {
             'old_password':this.state.password,
@@ -23,15 +26,17 @@ class ChangePassword extends Component {
             method: 'PUT',
             url: apiBaseUrl,
             data: payload,
-            // headers: {
-            //     Authorization: "Bearer "+window.localStorage.getItem('token'),
-            //     content_type: 'application/json'
-            // }
+            headers: {
+                Authorization: "Bearer "+window.localStorage.getItem('token'),
+                content_type: 'application/json'
+            }
         })
             .then((response) => {
+            this.setState({showspinner:false})
                 toast.success(response.data.message)
             })
             .catch((error) =>{
+            this.setState({showspinner:false})
                 toast.error(error.response.data.message)
             })
     }
@@ -46,6 +51,7 @@ class ChangePassword extends Component {
                     <div className="panel-heading">change password</div>
                     <div className="panel-body">
                         <form onSubmit={this.changePass} >
+                            {this.state.showspinner?<LoadingSpinner/>: ""}
                             <div className="form-group">
                                 <input type="password" className="form-control" placeholder="Old Password" id="password" required onChange={(event) =>this.setState({password:event.target.value})}/>
                             </div>
