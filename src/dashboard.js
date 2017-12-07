@@ -5,6 +5,7 @@ import * as ReactBootstrap from 'react-bootstrap';
 import Toaster from './sucessToaster'
 import {toast} from 'react-toastify'
 import ShoppingList from './shoppinglist'
+import LoadingSpinner from './spinner'
 import {BaseUrl,PrevAndNextStates, PromError, IsLoggedIn, getToken} from "./helperfunctions";
 const token = "Bearer "+window.localStorage.getItem('token');
 
@@ -14,7 +15,6 @@ class Dashboard extends Component{
         super(props);
         this.state = {
             shoppinglists: [],
-            items: [],
             msg: '',
             id : '',
             name: '',
@@ -23,22 +23,31 @@ class Dashboard extends Component{
             next: "",
             page: "",
             prev: "",
-            addshoppinglist: ""
+            addshoppinglist: "",
+            spinnershow: false
         };
         this.handleClick = this.handleClick.bind(this);
-        this.searchShoppinglist = this.searchShoppinglist.bind(this)
-        this.getshoppinglistnext =this.getshoppinglistnext.bind(this)
-        this.getshoppinglistprev =this.getshoppinglistprev.bind(this)
-        this.getshoppinglists=this.getshoppinglists.bind(this)
+        this.searchShoppinglist = this.searchShoppinglist.bind(this);
+        this.getshoppinglistnext =this.getshoppinglistnext.bind(this);
+        this.getshoppinglistprev =this.getshoppinglistprev.bind(this);
+        this.getshoppinglists=this.getshoppinglists.bind(this);
     }
 
     componentDidMount(){
         this.getshoppinglists();
     }
-
+    logout = () => {
+        //define a function to logout a user
+        window.localStorage.removeItem("token");
+        window.localStorage.removeItem("name");
+        //redirect to login page
+        this.props.history.push("/login");
+    };
 
     getshoppinglists = ()=>{
-        IsLoggedIn(this)
+        //function to get all the shopping lists for a particular user
+        this.setState({spinnershow:true});
+        IsLoggedIn(this);
         axios({
             url: `${BaseUrl()}shoppinglists/`,
             method: 'get',
@@ -49,29 +58,32 @@ class Dashboard extends Component{
 
         })
             .then((response) => {
-                console.log(response.data)
+                this.setState({spinnershow:false});
                 if(response.data.message === "You do not have  any shopping list"){
                     this.setState({
                         msg: response.data.message,
                     });
 
                 }
-                PrevAndNextStates(response, this)
-                console.log(response.data.shopping_lists)
+                //call method to setStates for previous and next
+                PrevAndNextStates(response, this);
+                //setstate for shoppinglist to the returned values
                 this.setState({
                     shoppinglists:response.data.shopping_lists
 
-                });
 
+                });
 
             })
             .catch((error) => {
-                PromError(error, this)
+            this.setState({spinnershow:false});
+                //call promise error function
+                PromError(error, this);
 
             });
-    }
+    };
     getshoppinglistnext (){
-
+    //method to get the next page shoppinglist when you click next
         axios({
             url: `${BaseUrl()}shoppinglists/${this.state.next}`,
             method: 'get',
@@ -82,13 +94,8 @@ class Dashboard extends Component{
 
         })
             .then((response) => {
-                console.log(response.data)
-                if(response.data.message === "You do not have  any shopping list"){
-                    this.setState({
-                        msg: response.data.message,
-                    });
-
-                }
+                console.log(response.data);
+                //call nest and previous state function to set states
                 PrevAndNextStates(response, this);
 
                 this.setState({
@@ -99,11 +106,13 @@ class Dashboard extends Component{
 
             })
             .catch((error) => {
-                PromError(error, this)
+            //call promise error function
+                PromError(error, this);
             });
-    }
+    };
     getshoppinglistprev (){
-        console.log(this.state.prev)
+        //function to get the previous page shopping list if the previous button is clicked
+        console.log(this.state.prev);
         axios({
             url: `${BaseUrl()}shoppinglists/${this.state.prev}`,
             method: 'get',
@@ -114,16 +123,9 @@ class Dashboard extends Component{
 
         })
             .then((response) => {
-                console.log(response.data)
-                if(response.data.message === "You do not have  any shopping list"){
-                    this.setState({
-                        msg: response.data.message,
-                    });
-
-                }
+            //call function to set previous and next states
                 PrevAndNextStates(response, this);
-
-
+                //set the shopping list state to the shopping lists that have been returned
                 this.setState({
                     shoppinglists:response.data.shopping_lists
 
@@ -132,10 +134,13 @@ class Dashboard extends Component{
 
             })
             .catch((error) => {
+            //call the function to handle the promise errors
                 PromError(error, this)
             });
-    }
-    addshoppinglist = (event) => {
+    };
+    addshoppinglist = () => {
+        //function to send requests to add a shopping list to the api
+        //define the payload to be sent to the api
         let payload = {
             "name": this.state.name
 
@@ -151,20 +156,23 @@ class Dashboard extends Component{
             },
         })
             .then((response) => {
-                toast.success("Shopping list has been added successfully")
-                var newStateArray = this.state.shoppinglists.slice();
+                //show success message if shopping list is added successfully
+                toast.success("Shopping list has been added successfully");
+                let newStateArray = this.state.shoppinglists.slice();
                 newStateArray.push(response.data);
                 this.setState({shoppinglists: newStateArray});
             })
             .catch((error) => {
+                //call function to handle promise errors
                 PromError(error, this)
             })
-    }
+    };
     editshoppinglist = () => {
+        //function that edits the shopping lists
         let payload = {
             "name": this.state.name
-        }
-        console.log(payload)
+        };
+        console.log(payload);
         axios({
             url: `${BaseUrl()}shoppinglists/`+this.state.id,
             method: 'PUT',
@@ -175,10 +183,11 @@ class Dashboard extends Component{
             },
         })
             .then((response)=>{
-                console.log(response.data)
-                toast.success(response.data.message.message)
-                this.setState({shoppinglists:this.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.state.id )})
-                var newStateArray = this.state.shoppinglists.slice();
+                //exeecutes when the request is successful
+                console.log(response.data.message.message);
+                toast.success(response.data.message.message);
+                this.setState({shoppinglists:this.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.state.id )});
+                let newStateArray = this.state.shoppinglists.slice();
                 newStateArray.push(response.data.shoppinglist);
                 this.setState({shoppinglists: newStateArray});
 
@@ -186,10 +195,12 @@ class Dashboard extends Component{
 
             })
             .catch((error) =>{
-                PromError(error, this)
+                //executes when the request is not successfull
+                PromError(error, this);
             })
-    }
+    };
     deleteshoppinglist = () => {
+        //function that handles the deletion of a shoppinglist
         axios({
             url: `${BaseUrl()}shoppinglists/`+this.state.id,
             method: 'DELETE',
@@ -199,17 +210,20 @@ class Dashboard extends Component{
             },
         })
             .then((response) =>{
-                toast.success(response.data.message)
-                this.setState({shoppinglists:this.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.state.id )})
+                toast.success(response.data.message);
+                this.setState({shoppinglists:this.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.state.id )});
             })
             .catch((error) =>{
 
-               PromError(error, this)
+               PromError(error, this);
             })
 
     };
     searchShoppinglist =() => {
+        //this is the function that handles both search and page limit(the number of list to display per page)
         let urllink="";
+        // check states of the page(which is the page limit) and search(the search option)
+        // and make url depending on that before sending it to the server
         if(this.state.page=== "" && this.state.search===""){
             urllink = `${BaseUrl()}shoppinglists/`
         }
@@ -222,7 +236,8 @@ class Dashboard extends Component{
         if(this.state.search==="" && this.state.page!==""){
             urllink=`${BaseUrl()}shoppinglists/?limit=${this.state.page}`
         }
-        console.log(urllink)
+        console.log(urllink);
+        //send the request
         axios({
             url: urllink,
             method: 'GET',
@@ -232,25 +247,29 @@ class Dashboard extends Component{
             },
         })
             .then((response) => {
-                console.log(response.data)
+                // the request is successful
+                console.log(response.data);
                 if(response.data.message==="Shopping list name does not exist") {
-                    this.setState({msg: response.data.message})
+                    this.setState({msg: response.data.message});
 
                 }
                 else {
-                    this.setState({shoppinglists: response.data.shopping_lists})
+                    this.setState({shoppinglists: response.data.shopping_lists});
                 }
             })
             .catch((error) => {
+                //the request is not successful call the promise error function
                 PromError(error,this)
             })
-    }
+    };
     handleClick=(id)=>{
-        console.log(id)
+        //function that handles click on view shopping list
+        console.log(id);
         this.setState({ id: id});
+        //redirects to the items of that shopping list
         this.props.history.push( `${id}/items`);
-        console.log(this.state.id)
-    }
+        console.log(this.state.id);
+    };
 
 
 
@@ -263,9 +282,7 @@ class Dashboard extends Component{
             return (
                 <div>
                     <Toaster/>
-                    <MainNav/>
-                    {/*{this.state.showComponent ?*/}
-                    {/*<ShoppingItems id={this.state.id} showComponent={ this.state.showComponent }/>: ""}*/}
+                    <MainNav logout={this.logout}/>
 
                     <div className=" col-lg-offset-2 col-md-8 ">
                         <div className="panel panel-success">
