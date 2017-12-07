@@ -5,9 +5,7 @@
 This is a react application that consumes the [Flask-Api](https://github.com/MuthomiMate/Flask-Api). The application helps you create, edit and delete shopping lists and their items.
 
 ## Live App:
-
-    [shopping-list-react](https://shopping-list-react.herokuapp.com/)
-
+Click here to see the live app [shopping-list-react](https://shopping-list-react.herokuapp.com/).
 ## Technologies used include:
 
     React
