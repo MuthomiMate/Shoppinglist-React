@@ -58,3 +58,8 @@ export const IsLoggedIn =(dashboard)=> {
 export const getToken = () =>{
     return "Bearer "+window.localStorage.getItem('token')
 }
+export const Logout = (current)=>{
+    window.localStorage.removeItem("token")
+    window.localStorage.removeItem("name")
+    //this.props.history.push("/login")
+}
