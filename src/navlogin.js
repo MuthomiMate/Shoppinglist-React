@@ -1,5 +1,5 @@
 import React from 'react'
-
+//stateless component for navigation bar for login
 const NavLogin = ()=>{
     return (
         <div>
