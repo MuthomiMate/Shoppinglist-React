@@ -63,11 +63,13 @@ describe ('<Login/>', () =>{
             pass.simulate('change', event2)
             submit.simulate('click', { preventDefault() {} })
 
+
             moxios.wait(function () {
                 console.log(wrapper.find('Toaster').html());
                 expect(wrapper.find('Toaster').html()).toContain("You logged in successfully.");
+
                 done()
-            })
+            });
         })
         it('shows error messages on login failure', function (done) {
             moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/login', {

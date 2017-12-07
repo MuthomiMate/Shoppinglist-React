@@ -75,15 +75,14 @@ describe('<Register/>', () =>{
             })
             let param = {"push" : () => {}}
             const wrapper = mount(<Register history={param} />);
-            const submit = wrapper.find('button#submit')
+            const submit = wrapper.find('form')
             wrapper.setState({first_name:'muthomi'})
             wrapper.setState({last_name:'mate'})
             wrapper.setState({email:'muthomimate@gmail.com'})
             wrapper.setState({password:'pass1234'})
-            submit.simulate('click', { preventDefault() {} })
+            submit.simulate('submit', { preventDefault() {} })
 
             moxios.wait(function () {
-                console.log(wrapper.find('Toaster').html());
                 expect(wrapper.find('Toaster').html()).toContain("You registered successfully. Please log in.");
                 done()
             }) 
@@ -95,15 +94,14 @@ describe('<Register/>', () =>{
             })
 
             const wrapper = mount(<Register/>);
-            const submit = wrapper.find('button#submit');
+            const submit = wrapper.find('form');
             wrapper.setState({first_name:'muthomi'})
             wrapper.setState({last_name:'mate'})
             wrapper.setState({email:'muthomimatehhh'})
             wrapper.setState({password:'pass1234'})
-            submit.simulate('click', { preventDefault() {} })
+            submit.simulate('submit', { preventDefault() {} })
 
             moxios.wait(function () {
-                console.log(wrapper.find('Toaster').html());
                 expect(wrapper.find('Toaster').html()).toContain("Enter a correct email address");
                 done()
             })
