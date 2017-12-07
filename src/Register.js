@@ -7,6 +7,7 @@ import {toast} from 'react-toastify'
 import axios from 'axios';
 import LoadingSpinner from './spinner'
 import NavLogin from './navlogin'
+import {BaseUrl, PromError} from './helperfunctions'
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 class Register extends Component {
@@ -25,13 +26,12 @@ class Register extends Component {
         //method that sends user request to api if user click on register button
         event.preventDefault();
         this.setState({spinnershow:true})
-        var apiBaseUrl = 'https://shopping-list-api-muthomi.herokuapp.com/';
         var payload={
             "email":this.state.email,
             "password":this.state.password,
             "name": `${this.state.first_name}${this.state.last_name}`
         }
-        axios.post(apiBaseUrl+'auth/register', payload)
+        axios.post(BaseUrl()+'auth/register', payload)
             .then((response)=> {
                     console.log(response.data)
                     this.setState({spinnershow:false})
@@ -45,7 +45,7 @@ class Register extends Component {
                 this.setState({spinnershow:false})
                 console.log(error.response)
                 //display the error to the user
-                toast.error(error.response.data.message)
+                PromError(error, this)
             });
     }
     render() {
