@@ -1,5 +1,4 @@
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
@@ -9,6 +8,7 @@ import {toast} from 'react-toastify'
 import Toaster from './sucessToaster'
 import LoadingSpinner from './spinner'
 import NavLogin from './navlogin'
+import  {PromError} from './helperfunctions'
 
 class Login extends  Component{
     constructor(props){
@@ -34,7 +34,9 @@ class Login extends  Component{
                                 <div style={{textAlign: "center"}}>
                                     <CardHeader title="Login"/>
 
-                                        <CardText>{this.state.spinnershow ?
+                                        <CardText>
+                                            {/*check if the state of the spinner is set*/}
+                                            {this.state.spinnershow ?
                                             <center><LoadingSpinner/></center> : ""}
                                             <div>
                                                 <TextField
@@ -67,6 +69,7 @@ class Login extends  Component{
         );
     }
     handleClick = (event) => {
+        //function to login user after clicking login
         event.preventDefault();
         this.setState({spinnershow:true})
         var apiBaseUrl = 'https://shopping-list-api-muthomi.herokuapp.com/auth/login';
@@ -80,20 +83,21 @@ class Login extends  Component{
             url: apiBaseUrl,
         })
             .then((response) =>{
-            setTimeout(() => {
+            //set spinnershow to false after promise
                 this.setState({spinnershow:false})
                 toast.success(response.data.message)
                 window.localStorage.setItem('token', response.data.access_token);
                 window.localStorage.setItem('name', response.data.name);
+                //redirect user to the dashboard if he logs in successfully
                 this.props.history.push("/dashboard");
-            }, 2000);
 
 
             })
             .catch((error) => {
-            console.log(error)
+            //set spinner false after promiose error
                 this.setState({spinnershow:false})
-                toast.error(error.response.data.message)
+                //call promise error function to handle all errors
+                PromError(error, this)
             })
 }
 
