@@ -314,6 +314,7 @@ class Dashboard extends Component{
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {this.state.spinnershow?<LoadingSpinner/>: ""}
                                 {
                                     shoppinglists.map((shoppinglists) => (
                                         <ShoppingList id={shoppinglists.id} name={shoppinglists.name} number={++x} handleClick = {this.handleClick} parent={this}/>
@@ -322,13 +323,16 @@ class Dashboard extends Component{
                                 </tbody>
                             </ReactBootstrap.Table>
                                 <div style={{float:'right'}} >
-                                    {this.state.next?<div style={{padding: '5px', display: 'inline-block'}} onClick={this.getshoppinglistnext}><ReactBootstrap.Button bsStyle="primary" >Next</ReactBootstrap.Button></div>: ""}
-                                    {this.state.prev?<div style={{display: 'inline-block'}} onClick={this.getshoppinglistprev}><ReactBootstrap.Button bsStyle="primary" >prev</ReactBootstrap.Button></div>:""}
+                                    {this.state.next?<div style={{padding: '5px', display: 'inline-block'}} onClick={this.getshoppinglistnext}><ReactBootstrap.Button bsStyle="primary" id="next">Next</ReactBootstrap.Button></div>: ""}
+                                    {this.state.prev?<div style={{display: 'inline-block'}} onClick={this.getshoppinglistprev}><ReactBootstrap.Button bsStyle="primary" id="prev">prev</ReactBootstrap.Button></div>:""}
                                 </div>
                         </div>: ""}
                     </div>
                         </div>
                     </div>
+
+                    {/* add shopping list modal */}
+
                     <div className="modal " id="adds" role="dialog" data-backdrop="false">
                         <div className="modal-dialog">
                             <div className="modal-content">
@@ -348,7 +352,7 @@ class Dashboard extends Component{
                                     </div>
                                 </div>
                                 <div className="modal-footer">
-                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal"
+                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" id="shopadd"
                                                            style={{float: "left", width: "150px"}}
                                                            onClick={this.addshoppinglist}>Add</ReactBootstrap.Button>
                                     <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
@@ -360,6 +364,9 @@ class Dashboard extends Component{
                         </div>
 
                     </div>
+
+                    {/* edit shoppinglist modal */}
+
                     <div className="modal " id="edits" role="dialog" data-backdrop="false">
                         <div className="modal-dialog">
                             <div className="modal-content">
@@ -379,7 +386,7 @@ class Dashboard extends Component{
                                     </div>
                                 </div>
                                 <div className="modal-footer">
-                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal"
+                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" id="shopedit"
                                                            style={{float: "left", width: "150px"}}
                                                            onClick={this.editshoppinglist}>Add</ReactBootstrap.Button>
                                     <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
@@ -391,6 +398,9 @@ class Dashboard extends Component{
                         </div>
 
                     </div>
+
+                    {/* delete modal  */}
+
                     <div className="modal " id="deletes" role="dialog" data-backdrop="false">
                         <div className="modal-dialog">
                             <div className="modal-content">
