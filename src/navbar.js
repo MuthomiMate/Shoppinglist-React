@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Logout} from './helperfunctions'
-import {Navbar, Nav, NavDropdown, MenuItem} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown, MenuItem, NavItem} from 'react-bootstrap';
 
 class MainNav extends Component {
     constructor(props){
@@ -19,6 +19,7 @@ class MainNav extends Component {
                 </Navbar.Header>
                 <div style={{float:'right'}}>
                 <Nav>
+                    <MenuItem href="/dashboard">shopping lists</MenuItem>
                     <NavDropdown  title={name} id="basic-nav-dropdown">
                         <MenuItem href="/ccpass"> change password</MenuItem>
                         <MenuItem onClick={this.props.logout} > logout</MenuItem>
