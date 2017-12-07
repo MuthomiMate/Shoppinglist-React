@@ -3,33 +3,40 @@ import {toast} from 'react-toastify'
 import axios from 'axios'
 import Toaster from './sucessToaster'
 import NavLogin from './navlogin'
-const apiBaseUrl=`https://shopping-list-api-muthomi.herokuapp.com/auth/passreset`
+import LoadingSpinner from './spinner'
+import {PromError,BaseUrl} from './helperfunctions'
 class PassReset extends Component {
     constructor(props){
         super(props)
         this.state = {
-            email: ''
+            email: '',
+            showspinner: false
         }
         this.ResetPass=this.ResetPass.bind(this)
     }
 
     ResetPass =(event)=>{
+        //function to handle reset password functionality
+        this.setState({showspinner:true})
         event.preventDefault();
         let payload={
             'email': this.state.email
         }
         axios({
             method: 'PUT',
-            url:apiBaseUrl,
+            url:`${BaseUrl()}auth/passreset`,
             data: payload
         })
         .then((response)=>{
+            //executes if the response is successful
+            this.setState({showspinner:false})
             console.log(response.data)
             toast.success(response.data.message)
         })
         .catch((error)=>{
-            console.log(error.response)
-            toast.error(error.response.data.message)
+            //handles promise errors
+            this.setState({showspinner:false})
+            PromError(error, this)
         })
     }
     render (){
