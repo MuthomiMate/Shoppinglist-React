@@ -32,18 +32,14 @@ class Dashboard extends Component{
         this.getshoppinglistnext =this.getshoppinglistnext.bind(this);
         this.getshoppinglistprev =this.getshoppinglistprev.bind(this);
         this.getshoppinglists=this.getshoppinglists.bind(this);
+
+
     }
+
 
     componentDidMount(){
         this.getshoppinglists();
     }
-    logout = () => {
-        //define a function to logout a user
-        window.localStorage.removeItem("token");
-        window.localStorage.removeItem("name");
-        //redirect to login page
-        this.props.history.push("/login");
-    };
 
     getshoppinglists = ()=>{
         //function to get all the shopping lists for a particular user

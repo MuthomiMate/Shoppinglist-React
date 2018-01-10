@@ -10,12 +10,14 @@ import Dashboard from "./dashboard"
 import ChangePassword from "./changePassword"
 import PassReset from "./resetPassword"
 import ErrorPage from "./errorpage"
+import LogoutComponent from "./logout"
 
 ReactDOM.render(
 <Router>
     <Switch>
         <Route exact path = "/" component ={Register}/>
         <Route exact path="/login" component={Login}/>
+        <Route exact path="/logout" component={LogoutComponent}/>
         <Route exact path="/dashboard" component={Dashboard}/>
         <Route exact path="/ccpass" component={ChangePassword}/>
         <Route exact path="/passreset" component={PassReset}/>

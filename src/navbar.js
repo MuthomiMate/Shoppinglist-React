@@ -22,7 +22,8 @@ class MainNav extends Component {
                     <MenuItem href="/dashboard">shopping lists</MenuItem>
                     <NavDropdown  title={name} id="basic-nav-dropdown">
                         <MenuItem href="/ccpass"> change password</MenuItem>
-                        <MenuItem onClick={this.props.logout} > logout</MenuItem>
+
+                        <MenuItem href={"/logout"}> logout </MenuItem>
                     </NavDropdown>
                 </Nav>
                 </div>
