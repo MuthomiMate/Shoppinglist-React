@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import EditShoppingList from './editshoppinglist'
+import DeleteShoppingList from './deleteshoppinglist'
 
 
 class ShoppingList extends Component{
@@ -6,11 +8,12 @@ class ShoppingList extends Component{
         super(props)
         this.state = {
             id: "",
-            name: ""
+            name: "",
+            showeditcomponent: false,
+            showdeleteComponent: false
         }
     }
  render(){
-     let x = 0;
         return(
                 <tr  key={this.props.id}>
                     <td><i>{this.props.number}</i></td>
@@ -24,12 +27,16 @@ class ShoppingList extends Component{
                     <td>
                         <div className="button btn-success glyphicon glyphicon-pencil"
                              data-toggle="modal" data-target="#edits"
-                             onClick={(event => this.props.parent.setState({id: this.props.id}))}></div>
+                             onClick={(e) =>this.setState({showeditcomponent:true})}></div>
+                        {this.state.showeditcomponent?
+                            <EditShoppingList name={this.props.name} parent={this.props.parent} id={this.props.id}/>:""}
+
                     </td>
                     <td>
                         <div className="button btn-danger glyphicon glyphicon-trash"
-                             data-toggle="modal" data-target="#deletes"
-                             onClick={(event => this.props.parent.setState({id: this.props.id}))}></div>
+                             data-toggle="modal" data-target="#deletes" onClick={(e) => this.setState({showdeleteComponent:true})}></div>
+                        { this.state.showdeleteComponent?
+                        <DeleteShoppingList parent={this.props.parent} name={this.props.name} id={this.props.id}/>: ""}
                     </td>
                 </tr>
 
