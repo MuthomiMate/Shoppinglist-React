@@ -190,12 +190,11 @@ class Dashboard extends Component{
     };
     handleClick=(id)=>{
         //function that handles click on view shopping list
-        console.log(id);
-        this.setState({ id: id});
+        this.setState({id});
         //redirects to the items of that shopping list
         this.props.history.push( `${id}/items`);
-        console.log(this.state.id);
     };
+
 
 
 
@@ -208,17 +207,17 @@ class Dashboard extends Component{
             return (
                 <div>
                     <Toaster/>
-                    <MainNav logout={this.logout}/>
-
+                    <MainNav />
                     <div className=" col-lg-offset-2 col-md-8 ">
                         <div className="panel panel-success">
                             <div className="panel-heading">shoppinglist</div>
                             <div className="panel-body">{this.state.msg}
                             <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#adds">Add
                                 Shopping List</ReactBootstrap.Button>
+                                <AddShoppingList parent={this}/>
                             {this.state.shoppinglists?
                                 <div>
-                                    <AddShoppingList parent={this}/>
+
                                     <div style={{marginTop: '10px', width: '100%'}}>
                                         <div className="form form-group" style={{display: "inline-block", width: '30%'}}>
                                             <input className="form-control" type="text" placeholder="Search shoppingList" onChange={(event) => this.setState({search: event.target.value})}/>
