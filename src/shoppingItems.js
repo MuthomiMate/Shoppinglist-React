@@ -47,7 +47,7 @@ class ShoppingItems extends Component {
             url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/`,
             method: `GET`,
             headers: {
-                Authorization: token,
+                Authorization: getToken(),
                 content_type: 'application/json',
             },
 
@@ -80,7 +80,7 @@ class ShoppingItems extends Component {
             url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/${this.state.next}`,
             method: `GET`,
             headers: {
-                Authorization: token,
+                Authorization: getToken(),
                 content_type: 'application/json',
             },
 
@@ -110,7 +110,7 @@ class ShoppingItems extends Component {
             url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/${this.state.prev}`,
             method: `GET`,
             headers: {
-                Authorization: token,
+                Authorization: getToken(),
                 content_type: 'application/json',
             },
 
@@ -153,7 +153,7 @@ class ShoppingItems extends Component {
             url: urllink,
             method: 'GET',
             headers : {
-                Authorization: token,
+                Authorization: getToken(),
                 content_type: 'application/json',
             },
         })
