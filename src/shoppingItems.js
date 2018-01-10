@@ -7,9 +7,12 @@ import {toast} from 'react-toastify'
 import {} from './helperfunctions'
 import {PromError} from "./helperfunctions";
 import LoadingSpinner from './spinner'
-import {BaseUrl, PrevAndNextStates} from "./helperfunctions";
+import {getToken, BaseUrl, PrevAndNextStates} from "./helperfunctions";
+import AddItem from './addItem'
+import EditItem from './editItem'
+import DeleteItem from './deleteitem'
 
-const token = "Bearer "+window.localStorage.getItem('token');
+
 class ShoppingItems extends Component {
     constructor (props){
         super(props);
@@ -170,96 +173,10 @@ class ShoppingItems extends Component {
                 PromError(error, this)
             })
     }
-    addItem = () =>{
-        //function to send the request for adding items
-        //send name as payload for the request
-        let payload = {
-            'name': this.state.name
-        };
-        axios({
-            //send tthe request
-            url: `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/`,
-            method : 'post',
-            data: payload,
-            headers : {
-                Authorization : token,
-                content_type: 'application/json',
-            }
-        })
-            .then((response) =>{
-                //request is successful
-                //notify the user that the item has been added
-                toast.success("Item has been added successfully")
-                var newStateArray = this.state.items.slice();
-                newStateArray.push(response.data);
-                this.setState({items: newStateArray});
-            })
-            .catch((error) =>{
-                //request not successfull, call the promise error function
-                PromError(error, this)
-            })
-    }
-    editItem = () => {
-        //function to edit a shopping list
-        //send the new name as the payload
-        let payload = {
-            "name": this.state.name
-        }
-        axios({
-            //send the request
-            url: `${BaseUrl()}shoppinglists/items/${this.state.id}`,
-            method: 'PUT',
-            data: payload,
-            headers: {
-                Authorization: token,
-                content_type: 'application/json'
-            }
-        })
-            .then((response) => {
-                //request successful display success toaster
-                console.log(response.data)
-                toast.success("Item has been edited successfully")
-                //remove the item before from items state
-                this.setState({items:this.state.items.filter(items => items.id !== this.state.id )})
-                var newStateArray = this.state.items.slice();
-                //add the edited item to the state
-                newStateArray.push(response.data);
-                this.setState({items: newStateArray});
-            })
-            .catch((error) => {
-                //request not successful, calls the promise errors function
-                PromError(error, this)
-            })
 
-    }
-    deleteItem = () => {
-        //function to delete an item
-        axios({
-            //send the request
-            url: `${BaseUrl()}shoppinglists/items/${this.state.id}`,
-            method: 'DELETE',
-            headers: {
-                Authorization: token,
-                content_type: 'application/json'
-            }
-        })
-            .then((response) => {
-                //request successfull
-                console.log(response.data)
-                toast.success(response.data.message)
-                //remove the deleted shopping list from the state
-                this.setState({items:this.state.items.filter(items => items.id !== this.state.id )})
-            })
-            .catch((error) => {
-                //request not successful
-                //call the promise error function
-                PromError(error, this)
-            })
-
-    }
     render (){
         let x =0;
-
+        let id= this.props.match.params.id;
         const items = this.state.items;
         return(
                 <div>
@@ -325,98 +242,6 @@ class ShoppingItems extends Component {
                     </div>
 
                 </div>
-            </div>
-            <div className="modal " id="additem" role="dialog" data-backdrop="false">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-
-
-                        <div className="modal-header">
-                            <div className="modal-title">Add Item</div>
-                        </div>
-                        <div className="modal-body">
-                            <div className="form">
-                                <div className="form-group">
-                                    <input className="form-control" type="text" id="name"
-                                           placeholder="Enter an item Name"
-                                           onChange={(event) => this.setState({name: event.target.value})}>
-                                    </input>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal"
-                                                   style={{float: "left", width: "150px"}}
-                                                   onClick={this.addItem}>Add</ReactBootstrap.Button>
-                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
-                                float: "right",
-                                width: "150px"
-                            }}>çlose</ReactBootstrap.Button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div className="modal " id="edititem" role="dialog" data-backdrop="false">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-
-
-                        <div className="modal-header">
-                            <div className="modal-title"> Edit this item</div>
-                        </div>
-                        <div className="modal-body">
-                            <div className="form">
-                                <div className="form-group">
-                                    <input className="form-control" type="text" id="name"
-                                           placeholder="Enter new Item Name"
-                                           onChange={(event) => this.setState({name: event.target.value})}>
-                                    </input>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal"
-                                                   style={{float: "left", width: "150px"}}
-                                                   onClick={this.editItem}>Add</ReactBootstrap.Button>
-                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
-                                float: "right",
-                                width: "150px"
-                            }}>çlose</ReactBootstrap.Button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div className="modal " id="deleteitem" role="dialog" data-backdrop="false">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-
-
-                        <div className="modal-header">
-                            <div className="modal-title text-center"> Delete Item</div>
-                        </div>
-                        <div className="modal-body">
-                            <div className="form">
-                                <div>
-                                    <div><h4 className="text-center">Are you sure you want to Delete this
-                                        Item</h4></div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <ReactBootstrap.Button bsStyle="danger" data-dismiss="modal"
-                                                   style={{float: "left", width: "150px"}}
-                                                   onClick={this.deleteItem}>OK</ReactBootstrap.Button>
-                            <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
-                                float: "right",
-                                width: "150px"
-                            }}>Cancel</ReactBootstrap.Button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
         </div>
