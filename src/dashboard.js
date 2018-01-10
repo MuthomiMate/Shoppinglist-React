@@ -6,6 +6,7 @@ import Toaster from './sucessToaster'
 import {toast} from 'react-toastify'
 import ShoppingList from './shoppinglist'
 import LoadingSpinner from './spinner'
+import AddShoppingList from './addshoppinglist'
 import {BaseUrl,PrevAndNextStates, PromError, IsLoggedIn, getToken} from "./helperfunctions";
 const token = "Bearer "+window.localStorage.getItem('token');
 
@@ -138,104 +139,29 @@ class Dashboard extends Component{
                 PromError(error, this)
             });
     };
-    addshoppinglist = () => {
-        //function to send requests to add a shopping list to the api
-        //define the payload to be sent to the api
-        let payload = {
-            "name": this.state.name
 
-        };
-        axios({
-
-            url: `${BaseUrl()}shoppinglists/`,
-            method: 'post',
-            data: payload,
-            headers: {
-                Authorization: token,
-                content_type: 'application/json',
-            },
-        })
-            .then((response) => {
-                //show success message if shopping list is added successfully
-                toast.success("Shopping list has been added successfully");
-                let newStateArray = this.state.shoppinglists.slice();
-                newStateArray.push(response.data);
-                this.setState({shoppinglists: newStateArray});
-            })
-            .catch((error) => {
-                //call function to handle promise errors
-                PromError(error, this)
-            })
-    };
-    editshoppinglist = () => {
-        //function that edits the shopping lists
-        let payload = {
-            "name": this.state.name
-        };
-        console.log(payload);
-        axios({
-            url: `${BaseUrl()}shoppinglists/`+this.state.id,
-            method: 'PUT',
-            data: payload,
-            headers: {
-                Authorization: token,
-                content_type: 'application/json',
-            },
-        })
-            .then((response)=>{
-                //exeecutes when the request is successful
-                console.log(response.data.message.message);
-                toast.success(response.data.message.message);
-                this.setState({shoppinglists:this.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.state.id )});
-                let newStateArray = this.state.shoppinglists.slice();
-                newStateArray.push(response.data.shoppinglist);
-                this.setState({shoppinglists: newStateArray});
-
-
-
-            })
-            .catch((error) =>{
-                //executes when the request is not successfull
-                PromError(error, this);
-            })
-    };
-    deleteshoppinglist = () => {
-        //function that handles the deletion of a shoppinglist
-        axios({
-            url: `${BaseUrl()}shoppinglists/`+this.state.id,
-            method: 'DELETE',
-            headers: {
-                Authorization: token,
-                content_type: 'application/json',
-            },
-        })
-            .then((response) =>{
-                toast.success(response.data.message);
-                this.setState({shoppinglists:this.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.state.id )});
-            })
-            .catch((error) =>{
-
-               PromError(error, this);
-            })
-
-    };
     searchShoppinglist =() => {
+        let {page, search} =this.state
         //this is the function that handles both search and page limit(the number of list to display per page)
         let urllink="";
         // check states of the page(which is the page limit) and search(the search option)
         // and make url depending on that before sending it to the server
-        if(this.state.page=== "" && this.state.search===""){
-            urllink = `${BaseUrl()}shoppinglists/`
+
+        switch(true){
+            case page=== "" && search==="":
+               urllink = `${BaseUrl()}shoppinglists/`;
+               break;
+            case page!=="" && search !== "":
+                urllink =`${BaseUrl()}shoppinglists/?q=${search}&limit=${page}`
+                break;
+            case search!=="" && page==="":
+                urllink =`${BaseUrl()}shoppinglists/?q=${search}`
+                break;
+            case search==="" && page!=="":
+                urllink=`${BaseUrl()}shoppinglists/?limit=${page}`
+                break;
         }
-        if(this.state.page!=="" && this.state.search !== "" ){
-            urllink =`${BaseUrl()}shoppinglists/?q=${this.state.search}&limit=${this.state.page}`
-        }
-        if(this.state.search!=="" && this.state.page===""){
-            urllink =`${BaseUrl()}shoppinglists/?q=${this.state.search}`
-        }
-        if(this.state.search==="" && this.state.page!==""){
-            urllink=`${BaseUrl()}shoppinglists/?limit=${this.state.page}`
-        }
+
         console.log(urllink);
         //send the request
         axios({
@@ -292,6 +218,7 @@ class Dashboard extends Component{
                                 Shopping List</ReactBootstrap.Button>
                             {this.state.shoppinglists?
                                 <div>
+                                    <AddShoppingList parent={this}/>
                                     <div style={{marginTop: '10px', width: '100%'}}>
                                         <div className="form form-group" style={{display: "inline-block", width: '30%'}}>
                                             <input className="form-control" type="text" placeholder="Search shoppingList" onChange={(event) => this.setState({search: event.target.value})}/>
@@ -331,106 +258,9 @@ class Dashboard extends Component{
                         </div>
                     </div>
 
-                    {/* add shopping list modal */}
-
-                    <div className="modal " id="adds" role="dialog" data-backdrop="false">
-                        <div className="modal-dialog">
-                            <div className="modal-content">
 
 
-                                <div className="modal-header">
-                                    <div className="modal-title">Add a shoppinglist</div>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="form">
-                                        <div className="form-group">
-                                            <input className="form-control" type="text" id="name"
-                                                   placeholder="Enter shopping list Name"
-                                                   onChange={(event) => this.setState({name: event.target.value})}>
-                                            </input>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" id="shopadd"
-                                                           style={{float: "left", width: "150px"}}
-                                                           onClick={this.addshoppinglist}>Add</ReactBootstrap.Button>
-                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
-                                        float: "right",
-                                        width: "150px"
-                                    }}>çlose</ReactBootstrap.Button>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
-
-                    {/* edit shoppinglist modal */}
-
-                    <div className="modal " id="edits" role="dialog" data-backdrop="false">
-                        <div className="modal-dialog">
-                            <div className="modal-content">
-
-
-                                <div className="modal-header">
-                                    <div className="modal-title"> Edit this shopping list</div>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="form">
-                                        <div className="form-group">
-                                            <input className="form-control" type="text" id="name"
-                                                   placeholder="Enter new shopping list Name"
-                                                   onChange={(event) => this.setState({name: event.target.value})}>
-                                            </input>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" id="shopedit"
-                                                           style={{float: "left", width: "150px"}}
-                                                           onClick={this.editshoppinglist}>Add</ReactBootstrap.Button>
-                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
-                                        float: "right",
-                                        width: "150px"
-                                    }}>çlose</ReactBootstrap.Button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {/* delete modal  */}
-
-                    <div className="modal " id="deletes" role="dialog" data-backdrop="false">
-                        <div className="modal-dialog">
-                            <div className="modal-content">
-
-
-                                <div className="modal-header">
-                                    <div className="modal-title text-center"> Delete shoppinglist</div>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="form">
-                                        <div>
-                                            <div><h4 className="text-center">Are you sure you want to Delete this
-                                                Shopping list</h4></div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <ReactBootstrap.Button bsStyle="danger" data-dismiss="modal"
-                                                           style={{float: "left", width: "150px"}}
-                                                           onClick={this.deleteshoppinglist}>OK</ReactBootstrap.Button>
-                                    <ReactBootstrap.Button bsStyle="primary" data-dismiss="modal" style={{
-                                        float: "right",
-                                        width: "150px"
-                                    }}>Cancel</ReactBootstrap.Button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
 
 
                 </div>
