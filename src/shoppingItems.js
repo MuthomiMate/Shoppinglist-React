@@ -89,7 +89,7 @@ class ShoppingItems extends Component {
             .then((response) => {
                 //the request was successful
                 console.log(response.data);
-                if(response.data!=[]){
+                if(response.data!==[]){
                     this.setState({msg: response.data.message })
                 }
                 //call the next and previous states function
@@ -118,7 +118,7 @@ class ShoppingItems extends Component {
             .then((response) => {
                 //request is successfull
                 console.log(response.data);
-                if(response.data!=[]){
+                if(response.data!==[]){
                     this.setState({msg: response.data.message })
                 }PrevAndNextStates(response, this)
                 //set items state to the ones that have been returned
@@ -132,20 +132,23 @@ class ShoppingItems extends Component {
 
     };
     searchitem =() => {
+        let {search, page} = this.state
         //function to search items and also determine the items to display per page
         let urllink="";
         //make the url according to the states of search and page limit
-        if(this.state.page=== "" && this.state.search===""){
-            urllink = `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/`
-        }
-        if(this.state.page!=="" && this.state.search !== "" ){
-            urllink =`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?q=${this.state.search}&limit=${this.state.page}`
-        }
-        if(this.state.search!=="" && this.state.page===""){
-            urllink =`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?q=${this.state.search}`
-        }
-        if(this.state.search==="" && this.state.page!==""){
-            urllink=`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?limit=${this.state.page}`
+        switch(true){
+            case page=== "" && search==="":
+                urllink = `${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/`
+                break;
+            case page!=="" && search !== "":
+                urllink =`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?q=${search}&limit=${page}`
+                break;
+            case search!=="" && page==="":
+                urllink =`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?q=${search}`
+                break;
+            case search==="" && page!=="":
+                urllink=`${BaseUrl()}shoppinglists/${this.props.match.params.id}/items/?limit=${page}`
+                break;
         }
         console.log(urllink)
         axios({
