@@ -8,7 +8,7 @@ import {} from './helperfunctions'
 import {PromError} from "./helperfunctions";
 import LoadingSpinner from './spinner'
 import {getToken, BaseUrl, PrevAndNextStates} from "./helperfunctions";
-import AddItem from './addItem'
+import AddItem from './Components/addItem'
 import EditItem from './editItem'
 import DeleteItem from './deleteitem'
 

@@ -27,7 +27,7 @@ class EditShoppingList extends Component {
             },
         })
             .then((response)=>{
-                //exeeutes when the request is successful
+                //executes when the request is successful
                 console.log(response.data.message.message);
                 toast.success(response.data.message.message);
                 this.props.parent.setState({shoppinglists:this.props.parent.state.shoppinglists.filter(shoppinglists => shoppinglists.id !== this.props.id )});

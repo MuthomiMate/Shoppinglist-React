@@ -3,8 +3,9 @@ import Login from '../Login'
 import ReactDOM from 'react-dom'
 import Enzyme from 'enzyme'
 import Toaster from '../sucessToaster'
-import {shallow,mount} from 'enzyme'
+import {mount} from 'enzyme'
 import moxios from 'moxios'
+import {TestUrl} from './basetest'
 import './localstorage'
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -40,12 +41,9 @@ describe ('<Login/>', () =>{
             moxios.uninstall()
         })
         it('logs in correct credentials', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/login', {
-                status: 200,
-                responseText:{ message:"You logged in successfully." ,
-                                access_token: "ghhjsjjsjsjsjsjj",
-                                name: "Muthomi"}
-            })
+            TestUrl('auth/login', 200, { message:"You logged in successfully." ,
+                access_token: "ghhjsjjsjsjsjsjj",
+                name: "Muthomi"})
             let param = {"push" : () => {}}
             const wrapper = mount(<Login history={param} />);
             const submit = wrapper.find('button#btn');
@@ -72,10 +70,7 @@ describe ('<Login/>', () =>{
             });
         })
         it('shows error messages on login failure', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/login', {
-                status: 401,
-                responseText:{ message:"Invalid email or password, Please try again" }
-            })
+            TestUrl('auth/login', 401,{ message:"Invalid email or password, Please try again" })
             const wrapper = mount(<Login />);
             const submit = wrapper.find('button#btn');
             const input = wrapper.find('TextField#email')

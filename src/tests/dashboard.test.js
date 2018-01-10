@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDom from 'react-dom'
 import {mount} from 'enzyme'
 import Toaster from '../sucessToaster'
 import Enzyme from 'enzyme'
@@ -7,6 +6,7 @@ import moxios from 'moxios'
 import sinon from 'sinon'
 import './localstorage'
 import Dashboard from '../dashboard'
+import {TestUrl} from './basetest'
 import Adapter from 'enzyme-adapter-react-16'
 
 Enzyme.configure({adapter: new Adapter()})
@@ -26,10 +26,7 @@ describe('<Dashboard/>', ()=>{
             expect(spy.calledOnce).toEqual(true);
         });
         it('displays message if no shopping lists', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/', {
-                status: 200,
-                responseText:{ message:"You do not have  any shopping list" }
-            })
+            TestUrl('shoppinglists/', 200, { message:"You do not have  any shopping list" })
 
             const wrapper = mount(<Dashboard/>);
 
@@ -39,12 +36,9 @@ describe('<Dashboard/>', ()=>{
             })
         })
         it('sets next page and prev page states', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/', {
-                status: 200,
-                responseText:{next_page: "?limit=10&page=2", previous_page: "None", shopping_lists: [{date_created: "Sat, 18 Nov 2017 06:30:45 GMT", date_modified: "Sat, 18 Nov 2017 06:30:45 GMT", id: 26, name: "aa"},{date_created: "Sat, 18 Nov 2017 06:30:45 GMT", date_modified: "Sat, 18 Nov 2017 06:30:45 GMT", id: 27, name: "aaa"}
-]}
-            })
-
+            TestUrl('shoppinglists/', 200, {next_page: "?limit=10&page=2", previous_page: "None", shopping_lists: [{date_created: "Sat, 18 Nov 2017 06:30:45 GMT", date_modified: "Sat, 18 Nov 2017 06:30:45 GMT", id: 26, name: "aa"},{date_created: "Sat, 18 Nov 2017 06:30:45 GMT", date_modified: "Sat, 18 Nov 2017 06:30:45 GMT", id: 27, name: "aaa"}
+                ]}
+            )
             const wrapper = mount(<Dashboard/>);
 
             moxios.wait(function () {
@@ -55,10 +49,7 @@ describe('<Dashboard/>', ()=>{
             })
         })
         it('it shows errors in case token is expired ', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/', {
-                status: 401,
-                responseText:{ message:"Your token has expired please login to get a new one" }
-            })
+            TestUrl('shoppinglists/', 401, { message:"Your token has expired please login to get a new one" })
 
             const wrapper = mount(<Dashboard/>);
 
@@ -73,11 +64,8 @@ describe('<Dashboard/>', ()=>{
             wrapper.setState({next:"?limit=10&page=2"})
             const back= wrapper.find('button#next')
             back.simulate('click')
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/?limit=10&page=2', {
-                status: 200,
-                responseText:{next_page: "?limit=10&page=2", previous_page: "None", shopping_lists: [{date_created: "Sat, 18 Nov 2017 06:30:45 GMT", date_modified: "Sat, 18 Nov 2017 06:30:45 GMT", id: 26, name: "pooolparty"},{date_created: "Sat, 18 Nov 2017 06:30:45 GMT", date_modified: "Sat, 18 Nov 2017 06:30:45 GMT", id: 27, name: "aaa"}
-                ]}
-            })
+            TestUrl('shoppinglists/?limit=10&page=2', 200, {next_page: "?limit=10&page=2", previous_page: "None", shopping_lists: [{date_created: "Sat, 18 Nov 2017 06:30:45 GMT", date_modified: "Sat, 18 Nov 2017 06:30:45 GMT", id: 26, name: "pooolparty"},{date_created: "Sat, 18 Nov 2017 06:30:45 GMT", date_modified: "Sat, 18 Nov 2017 06:30:45 GMT", id: 27, name: "aaa"}
+            ]})
             moxios.wait(function () {
                 expect(wrapper.html()).toContain('pooolparty');
                 done();
@@ -89,22 +77,19 @@ describe('<Dashboard/>', ()=>{
             wrapper.setState({prev:"?limit=10&page=1"})
             const back= wrapper.find('button#prev')
             back.simulate('click')
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/?limit=10&page=1', {
-                status: 200,
-                responseText:{
-                    next_page: "?limit=10&page=2",
-                    previous_page: "None", shopping_lists: [{
-                        date_created: "Sat, 18 Nov 2017 06:30:45 GMT",
-                        date_modified: "Sat, 18 Nov 2017 06:30:45 GMT",
-                        id: 26,
-                        name: "party"
-                    },{
-                        date_created: "Sat, 18 Nov 2017 06:30:45 GMT",
-                        date_modified: "Sat, 18 Nov 2017 06:30:45 GMT",
-                        id: 27,
-                        name: "aaa"}
-                ]}
-            })
+            TestUrl('shoppinglists/?limit=10&page=1', 200, {
+                next_page: "?limit=10&page=2",
+                previous_page: "None", shopping_lists: [{
+                    date_created: "Sat, 18 Nov 2017 06:30:45 GMT",
+                    date_modified: "Sat, 18 Nov 2017 06:30:45 GMT",
+                    id: 26,
+                    name: "party"
+                },{
+                    date_created: "Sat, 18 Nov 2017 06:30:45 GMT",
+                    date_modified: "Sat, 18 Nov 2017 06:30:45 GMT",
+                    id: 27,
+                    name: "aaa"}
+                ]})
             moxios.wait(function () {
                 expect(wrapper.html()).toContain('party');
                 done();
@@ -117,18 +102,13 @@ describe('<Dashboard/>', ()=>{
             wrapper.setState({name: "mate"})
             const back = wrapper.find('button#shopadd')
             back.simulate('click')
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/', {
-                status: 200,
-                responseText: {
-                    shopping_lists: [{
-                        date_created: "Sat, 18 Nov 2017 06:30:45 GMT",
-                        date_modified: "Sat, 18 Nov 2017 06:30:45 GMT",
-                        id: 27,
-                        name: "party"
-                    }
-                    ]
-                }
-            })
+            TestUrl('shoppinglists/', 200, [{
+                date_created: "Sat, 18 Nov 2017 06:30:45 GMT",
+                date_modified: "Sat, 18 Nov 2017 06:30:45 GMT",
+                id: 27,
+                name: "party"
+            }
+            ])
             moxios.wait(function () {
                 expect(wrapper.find("Toaster").html()).toContain('Shopping list has been added successfully');
                 done();
@@ -137,10 +117,11 @@ describe('<Dashboard/>', ()=>{
         // it('it edits a shopping list', function (done) {
         //     const wrapper = mount(<Dashboard/>);
         //     wrapper.setState({name: "mate"})
-        //     wrapper.setState({id: "4"})
-        //     const back = wrapper.find('button#shopedit')
+        //     wrapper.setState({id: 4})
+        //     wrapper.setState({showeditcomponent: true})
+        //     const back = wrapper.find('button#shopedituu')
         //     back.simulate('click')
-        //     moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/4', {
+        //     moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/shoppinglists/4/', {
         //         status: 200,
         //         responseText: {
         //             message: {message:"Shoppinglist has been edited sucessfully"},

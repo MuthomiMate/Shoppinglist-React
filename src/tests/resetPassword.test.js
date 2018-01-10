@@ -62,10 +62,7 @@ describe ('<PassReset/>', () =>{
                 }};
             input.simulate('change', event)
             form.simulate('submit', { preventDefault() {} })
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/passreset', {
-                status: 400,
-                responseText:{ message:'user not registered. Please register ' }
-            })
+            TestUrl('auth/passreset', 400, { message:'user not registered. Please register ' })
             moxios.wait(function () {
                 expect(wrapper.find('Toaster').html()).toContain('user not registered. Please register');
                 done()

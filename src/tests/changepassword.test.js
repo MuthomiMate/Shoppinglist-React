@@ -6,6 +6,7 @@ import './localstorage'
 import Enzyme from 'enzyme'
 import  Toaster from '../sucessToaster'
 import moxios from 'moxios'
+import {TestUrl} from './basetest'
 import Adapter from 'enzyme-adapter-react-16'
 
 Enzyme.configure({adapter: new Adapter()})
@@ -40,10 +41,10 @@ describe('<ChangePassword/>', () =>{
             moxios.uninstall()
         })
         it('successfully changes password', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/ccpas', {
-                status: 200,
-                responseText:{ message:"password changed sucessfully. Please login again"}
-            })
+            let url = 'auth/ccpas'
+            let status= 200
+            let text = { message:"password changed sucessfully. Please login again"}
+            TestUrl(url, status, text)
             const wrapper = mount(<ChangePassword/>);
             const submit = wrapper.find('form')
             const oldpass= wrapper.find('input#password')
@@ -68,10 +69,7 @@ describe('<ChangePassword/>', () =>{
             })
         })
         it('throws error on wrong password', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/ccpas', {
-                status: 401,
-                responseText:{ message:"password entered is incorrect. Try again!"}
-            })
+            TestUrl('auth/ccpas', 401, {message:"password entered is incorrect. Try again!"})
             const wrapper = mount(<ChangePassword/>);
             const submit = wrapper.find('form')
             const oldpass= wrapper.find('input#password')

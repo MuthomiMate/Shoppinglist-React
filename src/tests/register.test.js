@@ -6,6 +6,7 @@ import Toaster from '../sucessToaster'
 import  moxios from 'moxios'
 import  ReactDOM from 'react-dom'
 import Enzyme from 'enzyme'
+import {TestUrl} from './basetest'
 
 Enzyme.configure({adapter: new Adapter()})
 
@@ -69,10 +70,7 @@ describe('<Register/>', () =>{
             moxios.uninstall()
         })
         it('registers correctly', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/register', {
-                status: 200,
-                responseText:{ message:"You registered successfully. Please log in."}
-            })
+            TestUrl('auth/register', 200, { message:"You registered successfully. Please log in."})
             let param = {"push" : () => {}}
             const wrapper = mount(<Register history={param} />);
             const submit = wrapper.find('form')
@@ -88,10 +86,7 @@ describe('<Register/>', () =>{
             }) 
         })
         it('refuses incorrect registration', function (done) {
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/register', {
-                status: 400,
-                responseText:{ message:"Enter a correct email address" }
-            })
+            TestUrl('auth/register', 400, { message:"Enter a correct email address" })
 
             const wrapper = mount(<Register/>);
             const submit = wrapper.find('form');
