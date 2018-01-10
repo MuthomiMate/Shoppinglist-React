@@ -188,6 +188,7 @@ class ShoppingItems extends Component {
                     <div className="panel-body">
                     <ReactBootstrap.Button bsStyle="primary" data-toggle="modal" data-target="#additem">Add
                         Item</ReactBootstrap.Button>
+                         <AddItem id={id} parent={this}/>
                     {this.state.msg ? <div className="Alert alert-danger" style={{marginTop:"20px"}}>{this.state.msg} </div>:
                         <div>
                         <div style={{marginTop: '10px', width: '100%'}}>
@@ -222,11 +223,13 @@ class ShoppingItems extends Component {
                                                     <div className="button btn-success glyphicon glyphicon-pencil"
                                                          data-toggle="modal" data-target="#edititem"
                                                          onClick={(event => this.setState({id: items.id}))}></div>
+                                                    <EditItem name={items.name} parent={this} id={items.id}/>
                                                 </td>
                                                 <td>
                                                     <div className="button btn-danger glyphicon glyphicon-trash"
                                                          data-toggle="modal" data-target="#deleteitem"
                                                          onClick={(event => this.setState({id: items.id}))}></div>
+                                                    <DeleteItem parent={this} id={items.id}/>
                                                 </td>
                                             </tr>
                                         ))
