@@ -3,8 +3,9 @@ import PassReset from '../resetPassword'
 import ReactDOM from 'react-dom'
 import Enzyme from 'enzyme'
 import Toaster from '../sucessToaster';
-import {shallow,mount} from 'enzyme'
+import {mount} from 'enzyme'
 import moxios from 'moxios'
+import {TestUrl} from './basetest'
 import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({adapter:new Adapter()})
@@ -40,10 +41,10 @@ describe ('<PassReset/>', () =>{
                 }};
             input.simulate('change', event)
             form.simulate('submit', { preventDefault() {} })
-            moxios.stubRequest('https://shopping-list-api-muthomi.herokuapp.com/auth/passreset', {
-                status: 200,
-                responseText:{ message:'Password has been sent to your email' }
-            })
+            let url = 'auth/passreset';
+            let status =200;
+            let text = { message:'Password has been sent to your email' };
+            TestUrl(url,status,text);
             moxios.wait(function () {
                 console.log(wrapper.find('Toaster').text());
                 expect(wrapper.find('Toaster').html()).toContain('Password has been sent to your email');
