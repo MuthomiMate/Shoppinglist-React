@@ -1,22 +1,42 @@
 {
   "name": "trial",
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/registerServiceWorker.js",
+      "!<rootDir>/node_modules/"
+    ]
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
+    "enzyme-adapter-react-16": "^1.1.0",
     "material-ui": "^0.19.4",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.3",
-    "react-dom": "^16.0.0",
+    "react-overlay-loading": "^1.0.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.14",
-    "react-tap-event-plugin": "^3.0.2"
+    "react-spinkit": "^3.0.0",
+    "react-tap-event-plugin": "^3.0.2",
+    "react-toastify": "^2.2.0",
+    "react-tooltip": "^3.4.0",
+    "sinon": "^4.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --env=jsdom --coverage",
+    "eject": "react-scripts eject",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "enzyme": "^3.2.0",
+    "moxios": "^0.4.0",
+    "react-dom": "^16.1.1",
+    "react-test-renderer": "^16.1.1"
   }
 }
